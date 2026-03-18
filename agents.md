@@ -105,6 +105,7 @@ The project was built using an AI-assisted architecture-led development approach
 - `queries/highlights.scm` — Full syntax highlighting with semantic token types
 - `queries/locals.scm` — Scope, definition, and reference tracking
 - `queries/indents.scm` — Auto-indentation rules
+- `queries/textobjects.scm` — Text object queries for structural editing
 
 **Highlighting categories mapped**:
 - `@keyword.type` — Declaration keywords (concept, asset, enum, etc.)
@@ -119,6 +120,40 @@ The project was built using an AI-assisted architecture-led development approach
 - `@comment` — Line and block comments
 - `@operator` — `-->`, `=`, `*`
 - `@string.regex` — Regular expression literals
+
+### Phase 7: Text Object Query Validation & Rewrite
+
+**Objective**: Validate and fix the text object queries for correctness and nvim-treesitter-textobjects compatibility.
+
+**Issues found in the initial `textobjects.scm`**:
+
+| Issue | Severity | Resolution |
+|---|---|---|
+| `.inner` captures included braces (`{` and `}`) | High | Replaced with `#make-range!` pattern using `(_) @_start @_end (_)? @_end` between anchored `"{"` and `"}"`, matching the canonical C textobjects pattern from nvim-treesitter-textobjects |
+| `@block` had no `.inner` counterpart | Medium | Added `@block.inner` via `#make-range!` with the same brace-excluding pattern |
+| `@function.outer/inner` was redundant alias of `@class` | Medium | Removed entirely — Concerto is a schema language with no functions; aliasing declarations as functions is misleading |
+| `scalar_declaration` missing from all captures | Low | Added as `@class.outer` only (scalars have no body braces) |
+| No `@parameter.inner` for fields | Medium | Added for all 8 field types, enum properties, and map key/value types |
+| No `@assignment` for default values | Low | Added `@assignment.outer` (whole clause) and `@assignment.inner` (just the value) |
+
+**Text object captures implemented**:
+
+| Capture | Description |
+|---|---|
+| `@class.outer` | Entire declaration (concept, asset, participant, transaction, event, enum, map, scalar) including decorators |
+| `@class.inner` | Body contents between `{` and `}`, excluding the braces themselves |
+| `@block.outer` | Entire `{ }` block (class, enum, or map body) |
+| `@block.inner` | Block contents excluding braces |
+| `@parameter.inner` | Individual field declarations, enum values, map key/value entries |
+| `@assignment.outer` | Entire `default = <value>` clause |
+| `@assignment.inner` | Just the default value (string, boolean, integer, or real literal) |
+| `@comment.outer` | Line or block comment |
+
+**Key design decisions**:
+- Used `#make-range!` directive (supported by nvim-treesitter-textobjects) to create inner ranges that properly exclude braces, following the same pattern used by the official C textobjects
+- Empty bodies (e.g., `concept Empty {}`) gracefully produce no inner match, which is correct — there is nothing to select
+- Added a documentation note that `#make-range!` is not supported by mini.ai
+- Validated all queries against every example `.cto` file with `tree-sitter query` — zero errors
 
 ## Tools Used
 
@@ -141,7 +176,9 @@ Architect Agent (orchestrator)
     |
     +-- General Agent: Validated examples against both parsers in parallel
     |
-    +-- Architect: Created highlights.scm, locals.scm, indents.scm
+    +-- Architect: Created highlights.scm, locals.scm, indents.scm, textobjects.scm
+    |
+    +-- Architect: Validated & rewrote textobjects.scm (Phase 7)
     |
     +-- Architect: Wrote README.md and agents.md
 ```
@@ -154,5 +191,6 @@ Architect Agent (orchestrator)
 - **Test pass rate**: 100%
 - **Example files**: 6 validated .cto files
 - **Syntax highlighting queries**: 170+ lines covering all node types
+- **Text object queries**: 128 lines, 5 capture groups (`@class`, `@block`, `@parameter`, `@assignment`, `@comment`)
 - **Development time**: Single session, iterative approach
 - **Conflicts in grammar**: 0 (clean generation)

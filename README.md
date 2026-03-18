@@ -11,6 +11,7 @@ Concerto is a lightweight, object-oriented data modeling (schema) language desig
 - **Complete grammar** covering the full Concerto CTO language specification
 - **120 tests** in the test corpus, all passing
 - **Syntax highlighting queries** for editor integration
+- **Text object queries** for structural editing (nvim-treesitter-textobjects compatible)
 - **Locals queries** for scope-aware features
 - **Indent queries** for auto-indentation
 - **Cross-validated** against the official `@accordproject/concerto-cli` parser
@@ -175,6 +176,7 @@ tree-sitter-concerto/
   package.json        # Node.js package manifest
   queries/
     highlights.scm    # Syntax highlighting queries
+    textobjects.scm   # Text object queries (nvim-treesitter-textobjects)
     locals.scm        # Scope/definition/reference queries
     indents.scm       # Auto-indentation queries
   test/
@@ -200,6 +202,26 @@ tree-sitter-concerto/
     maps.cto
   src/                # Generated C parser (auto-generated, do not edit)
 ```
+
+## Text Objects
+
+The `queries/textobjects.scm` file provides structural text objects compatible with [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects).
+
+| Text Object | Inner (`i`) | Outer (`a`) | Description |
+|---|---|---|---|
+| `@class` | Body contents (excluding braces) | Entire declaration including decorators | Works on concept, asset, participant, transaction, event, enum, map, scalar declarations |
+| `@block` | Block contents (excluding braces) | Entire `{ }` block | Works on class, enum, and map bodies |
+| `@parameter` | Individual field/property | — | Works on all field types, enum values, map key/value types |
+| `@assignment` | The assigned value | Entire `default = <value>` clause | Works on all default value clauses |
+| `@comment` | — | Entire comment | Works on line and block comments |
+
+**Example keybindings** (with nvim-treesitter-textobjects configured):
+- `vic` — select the fields inside a concept (excluding braces)
+- `vac` — select an entire declaration including its decorators
+- `dap` — delete a single field declaration
+- `cia` — change the value in a `default = ...` clause
+
+> **Note**: The text object queries use `#make-range!` directives to properly exclude braces from inner selections. This is supported by nvim-treesitter-textobjects but not by mini.ai. If using mini.ai, you may need simpler capture patterns.
 
 ## Editor Integration
 
