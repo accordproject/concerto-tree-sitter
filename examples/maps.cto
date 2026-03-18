@@ -1,0 +1,89 @@
+namespace org.example.maps@1.0.0
+
+// Map with primitive key and primitive value
+map StringToString {
+  o String
+  o String
+}
+
+map StringToInteger {
+  o String
+  o Integer
+}
+
+map StringToDouble {
+  o String
+  o Double
+}
+
+map StringToBoolean {
+  o String
+  o Boolean
+}
+
+map StringToLong {
+  o String
+  o Long
+}
+
+map DateTimeToString {
+  o DateTime
+  o String
+}
+
+// Map with primitive key and complex value type
+concept Address {
+  o String street
+  o String city
+}
+
+map StringToAddress {
+  o String
+  o Address
+}
+
+// Map with DateTime key and complex value
+map DateTimeToAddress {
+  o DateTime
+  o Address
+}
+
+// Map with relationship value
+asset Vehicle identified by vin {
+  o String vin
+}
+
+map StringToVehicleRef {
+  o String
+  --> Vehicle
+}
+
+map DateTimeToVehicleRef {
+  o DateTime
+  --> Vehicle
+}
+
+// Map with scalar key type
+scalar CountryCode extends String regex=/^[A-Z]{2}$/
+
+map CountryNames {
+  o CountryCode
+  o String
+}
+
+// Map with decorators
+@description("Stores configuration key-value pairs")
+map Config {
+  @description("The configuration key")
+  o String
+  @description("The configuration value")
+  o String
+}
+
+// Map with decorated relationship value
+@resource
+map AssetRegistry {
+  o String
+  @description("Reference to a vehicle")
+  --> Vehicle
+}

@@ -1,0 +1,87 @@
+===
+Simple namespace
+===
+
+namespace test
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path)))
+
+===
+Dotted namespace
+===
+
+namespace org.example
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path)))
+
+===
+Deeply nested namespace
+===
+
+namespace org.example.deep.nested
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path)))
+
+===
+Versioned namespace
+===
+
+namespace org.example@1.2.3
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path)))
+
+===
+Versioned namespace with two-part version
+===
+
+namespace org.example@1.0
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path)))
+
+===
+Versioned namespace with prerelease
+===
+
+namespace org.example@1.0.0-beta.1
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path)))
+
+===
+Namespace with decorator
+===
+
+@foo
+namespace test
+
+---
+
+(source_file
+  (decorators
+    (decorator
+      name: (identifier)))
+  (namespace_declaration
+    (namespace_path)))

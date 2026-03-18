@@ -1,0 +1,27 @@
+{
+  "grammars": [
+    {
+      "name": "concerto",
+      "camelcase": "Concerto",
+      "scope": "source.concerto",
+      "injection-regex": "^concerto$",
+      "file-types": ["cto"],
+      "highlights": "queries/highlights.scm",
+      "locals": "queries/locals.scm",
+      "path": "."
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "Apache-2.0",
+    "description": "Tree-sitter grammar for the Concerto Modelling Language",
+    "authors": [
+      {
+        "name": "Accord Project Contributors"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/accordproject/tree-sitter-concerto"
+    }
+  }
+}

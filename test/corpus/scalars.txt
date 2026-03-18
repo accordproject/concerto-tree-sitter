@@ -1,0 +1,344 @@
+===
+String scalar
+===
+
+namespace test
+scalar SSN extends String
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (string_scalar))))
+
+===
+Boolean scalar
+===
+
+namespace test
+scalar Flag extends Boolean
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (boolean_scalar))))
+
+===
+Integer scalar
+===
+
+namespace test
+scalar Count extends Integer
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (integer_scalar))))
+
+===
+Long scalar
+===
+
+namespace test
+scalar BigNum extends Long
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (long_scalar))))
+
+===
+Double scalar
+===
+
+namespace test
+scalar Price extends Double
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (double_scalar))))
+
+===
+DateTime scalar
+===
+
+namespace test
+scalar StartDate extends DateTime
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (datetime_scalar))))
+
+===
+String scalar with default
+===
+
+namespace test
+scalar SSN extends String default = "000-00-0000"
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (string_scalar
+        (string_default
+          (string_literal
+            (string_content_double)))))))
+
+===
+Boolean scalar with default
+===
+
+namespace test
+scalar Flag extends Boolean default = true
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (boolean_scalar
+        (boolean_default
+          (boolean_literal))))))
+
+===
+Integer scalar with default
+===
+
+namespace test
+scalar Count extends Integer default = 0
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (integer_scalar
+        (integer_default
+          (signed_integer))))))
+
+===
+Long scalar with default
+===
+
+namespace test
+scalar BigNum extends Long default = 0
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (long_scalar
+        (integer_default
+          (signed_integer))))))
+
+===
+Double scalar with default
+===
+
+namespace test
+scalar Price extends Double default = 0.0
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (double_scalar
+        (real_default
+          (signed_real))))))
+
+===
+DateTime scalar with default
+===
+
+namespace test
+scalar StartDate extends DateTime default = "2024-01-01"
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (datetime_scalar
+        (string_default
+          (string_literal
+            (string_content_double)))))))
+
+===
+Integer scalar with range validator
+===
+
+namespace test
+scalar Score extends Integer range=[0,100]
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (integer_scalar
+        (range_validator
+          lower: (signed_real)
+          upper: (signed_real))))))
+
+===
+Double scalar with range validator
+===
+
+namespace test
+scalar Rating extends Double range=[0.0, 5.0]
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (double_scalar
+        (range_validator
+          lower: (signed_real)
+          upper: (signed_real))))))
+
+===
+String scalar with regex validator
+===
+
+namespace test
+scalar PostalCode extends String regex=/^[0-9]{5}$/
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (string_scalar
+        (regex_validator
+          (regex_literal))))))
+
+===
+String scalar with default, regex and length validators
+===
+
+namespace test
+scalar PostalCode extends String default = "00000" regex=/^[0-9]{5}$/ length=[5,5]
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      name: (type_identifier
+        (identifier))
+      (string_scalar
+        (string_default
+          (string_literal
+            (string_content_double)))
+        (regex_validator
+          (regex_literal))
+        (length_validator
+          min: (signed_integer)
+          max: (signed_integer))))))
+
+===
+Scalar with decorator
+===
+
+namespace test
+@description("A postal code")
+scalar PostalCode extends String
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (scalar_declaration
+      (decorators
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_string
+                (string_literal
+                  (string_content_double)))))))
+      name: (type_identifier
+        (identifier))
+      (string_scalar))))

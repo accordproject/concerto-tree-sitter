@@ -1,0 +1,232 @@
+===
+Basic concept with empty body
+===
+
+namespace test
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Concept with fields
+===
+
+namespace test
+concept Address {
+  o String street
+  o String city
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier))
+        (string_field
+          name: (identifier))))))
+
+===
+Abstract concept
+===
+
+namespace test
+abstract concept Base {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Concept with identified
+===
+
+namespace test
+concept Foo identified {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (identified)
+      (class_body))))
+
+===
+Concept with identified by
+===
+
+namespace test
+concept Person identified by name {
+  o String name
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (identified_by
+        field: (identifier))
+      (class_body
+        (string_field
+          name: (identifier))))))
+
+===
+Concept with extends
+===
+
+namespace test
+concept Child extends Parent {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (extends_clause
+        (type_identifier
+          (identifier)))
+      (class_body))))
+
+===
+Abstract concept with identified by and extends
+===
+
+namespace test
+abstract concept Foo identified by bar extends Baz {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (identified_by
+        field: (identifier))
+      (extends_clause
+        (type_identifier
+          (identifier)))
+      (class_body))))
+
+===
+Concept with all field types
+===
+
+namespace test
+concept AllFields {
+  o String name
+  o Boolean active
+  o DateTime created
+  o Integer count
+  o Long bigNum
+  o Double price
+  o MyType custom
+  --> MyType ref
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier))
+        (boolean_field
+          name: (identifier))
+        (datetime_field
+          name: (identifier))
+        (integer_field
+          name: (identifier))
+        (long_field
+          name: (identifier))
+        (double_field
+          name: (identifier))
+        (object_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))))))
+
+===
+Concept with decorated fields
+===
+
+namespace test
+concept Foo {
+  @description("Height (cm)")
+  o Double height range=[0.0,]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (double_field
+          (decorators
+            (decorator
+              name: (identifier)
+              (decorator_arguments
+                (decorator_arg_list
+                  (decorator_string
+                    (string_literal
+                      (string_content_double)))))))
+          name: (identifier)
+          (range_validator
+            lower: (signed_real)))))))

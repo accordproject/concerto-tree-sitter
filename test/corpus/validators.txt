@@ -1,0 +1,244 @@
+===
+Regex validator on string field
+===
+
+namespace test
+concept Foo {
+  o String email regex=/^[a-z]+@[a-z]+\.[a-z]+$/
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier)
+          (regex_validator
+            (regex_literal)))))))
+
+===
+Length validator with both min and max
+===
+
+namespace test
+concept Foo {
+  o String name length=[1,100]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier)
+          (length_validator
+            min: (signed_integer)
+            max: (signed_integer)))))))
+
+===
+Length validator with only max
+===
+
+namespace test
+concept Foo {
+  o String code length=[,10]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier)
+          (length_validator
+            max: (signed_integer)))))))
+
+===
+Length validator with only min
+===
+
+namespace test
+concept Foo {
+  o String desc length=[5,]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier)
+          (length_validator
+            min: (signed_integer)))))))
+
+===
+Range validator with both bounds
+===
+
+namespace test
+concept Foo {
+  o Integer age range=[0,150]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (integer_field
+          name: (identifier)
+          (range_validator
+            lower: (signed_real)
+            upper: (signed_real)))))))
+
+===
+Range validator with only lower bound
+===
+
+namespace test
+concept Foo {
+  o Double height range=[0.0,]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (double_field
+          name: (identifier)
+          (range_validator
+            lower: (signed_real)))))))
+
+===
+Range validator with no bounds
+===
+
+namespace test
+concept Foo {
+  o Integer val range=[,]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (integer_field
+          name: (identifier)
+          (range_validator))))))
+
+===
+Range validator with decimal bounds
+===
+
+namespace test
+concept Foo {
+  o Double score range=[0.0,100.0]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (double_field
+          name: (identifier)
+          (range_validator
+            lower: (signed_real)
+            upper: (signed_real)))))))
+
+===
+String field with regex and length validators
+===
+
+namespace test
+concept Foo {
+  o String code regex=/^[A-Z]{3}$/ length=[3,3]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier)
+          (regex_validator
+            (regex_literal))
+          (length_validator
+            min: (signed_integer)
+            max: (signed_integer)))))))
+
+===
+Long field with range validator
+===
+
+namespace test
+concept Foo {
+  o Long count range=[0,]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (long_field
+          name: (identifier)
+          (range_validator
+            lower: (signed_real)))))))

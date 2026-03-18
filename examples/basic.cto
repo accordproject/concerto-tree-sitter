@@ -1,0 +1,24 @@
+namespace test@1.0.0
+
+enum Country {
+  o UK
+  o USA
+  o FRANCE
+  o GERMANY
+  o JAPAN
+}
+
+concept Address {
+  o String street
+  o String city
+  o String postCode
+  o Country country
+}
+
+concept Person identified by name {
+  o String name
+  o Address address optional
+  @description("Height (cm)")
+  o Double height range=[0.0,]
+  o DateTime dateOfBirth
+}

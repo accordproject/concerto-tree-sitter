@@ -1,0 +1,104 @@
+===
+Line comment before namespace
+===
+
+// this is a comment
+namespace test
+
+---
+
+(source_file
+  (line_comment)
+  (namespace_declaration
+    (namespace_path)))
+
+===
+Block comment
+===
+
+namespace test
+/* block comment */
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (block_comment)
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Multi-line block comment
+===
+
+namespace test
+/**
+ * doc comment
+ */
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (block_comment)
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Comment inside class body
+===
+
+namespace test
+concept Foo {
+  // field comment
+  o String name
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (line_comment)
+        (string_field
+          name: (identifier))))))
+
+===
+Inline block comment
+===
+
+namespace test
+concept Foo {
+  o String name /* inline */
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier))
+        (block_comment)))))

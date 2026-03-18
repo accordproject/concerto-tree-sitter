@@ -1,0 +1,158 @@
+===
+Single import with versioned path
+===
+
+namespace test
+import org.example@1.0.0.Foo
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (import_list
+    (import_single
+      (import_path)
+      type: (identifier))))
+
+===
+Wildcard import
+===
+
+namespace test
+import org.example@1.0.0.*
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (import_list
+    (import_all
+      (import_path))))
+
+===
+Multiple types import
+===
+
+namespace test
+import org.example@1.0.0.{Foo, Bar}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (import_list
+    (import_types
+      (import_path)
+      (type_list
+        (type_list_item
+          (identifier))
+        (type_list_item
+          (identifier))))))
+
+===
+Import with aliasing
+===
+
+namespace test
+import org.example@1.0.0.{Foo as Bar, Baz}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (import_list
+    (import_types
+      (import_path)
+      (type_list
+        (type_list_item
+          (aliased_type
+            original: (identifier)
+            alias: (identifier)))
+        (type_list_item
+          (identifier))))))
+
+===
+Single import with from URI
+===
+
+namespace test
+import org.example@1.0.0.Foo from https://example.com/model.cto
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (import_list
+    (import_single
+      (import_path)
+      type: (identifier)
+      (from_uri
+        (uri)))))
+
+===
+Wildcard import with from URI
+===
+
+namespace test
+import org.example@1.0.0.* from https://example.com/model.cto
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (import_list
+    (import_all
+      (import_path)
+      (from_uri
+        (uri)))))
+
+===
+Multiple types import with from URI and aliasing
+===
+
+namespace test
+import org.example@1.0.0.{Foo, Bar as Baz} from https://example.com/model.cto
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (import_list
+    (import_types
+      (import_path)
+      (type_list
+        (type_list_item
+          (identifier))
+        (type_list_item
+          (aliased_type
+            original: (identifier)
+            alias: (identifier))))
+      (from_uri
+        (uri)))))
+
+===
+Multiple import statements
+===
+
+namespace test
+import org.example@1.0.0.Foo
+import org.other@2.0.0.*
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (import_list
+    (import_single
+      (import_path)
+      type: (identifier))
+    (import_all
+      (import_path))))

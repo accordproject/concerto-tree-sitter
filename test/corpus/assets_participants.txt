@@ -1,0 +1,287 @@
+===
+Asset with identified by
+===
+
+namespace test
+asset Vehicle identified by vin {
+  o String vin
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (asset_declaration
+      name: (type_identifier
+        (identifier))
+      (identified_by
+        field: (identifier))
+      (class_body
+        (string_field
+          name: (identifier))))))
+
+===
+Abstract asset with identified
+===
+
+namespace test
+abstract asset Base identified {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (asset_declaration
+      name: (type_identifier
+        (identifier))
+      (identified)
+      (class_body))))
+
+===
+Asset with extends
+===
+
+namespace test
+asset Car extends Vehicle {
+  o String color
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (asset_declaration
+      name: (type_identifier
+        (identifier))
+      (extends_clause
+        (type_identifier
+          (identifier)))
+      (class_body
+        (string_field
+          name: (identifier))))))
+
+===
+Participant with identified by
+===
+
+namespace test
+participant Owner identified by email {
+  o String email
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (participant_declaration
+      name: (type_identifier
+        (identifier))
+      (identified_by
+        field: (identifier))
+      (class_body
+        (string_field
+          name: (identifier))))))
+
+===
+Abstract participant with identified
+===
+
+namespace test
+abstract participant Base identified {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (participant_declaration
+      name: (type_identifier
+        (identifier))
+      (identified)
+      (class_body))))
+
+===
+Transaction with fields
+===
+
+namespace test
+transaction Transfer {
+  o String data
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (transaction_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier))))))
+
+===
+Transaction with relationship fields
+===
+
+namespace test
+transaction VehicleTransfer {
+  --> Vehicle vehicle
+  --> Owner newOwner
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (transaction_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))))))
+
+===
+Event with fields
+===
+
+namespace test
+event Transferred {
+  o String data
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (event_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier))))))
+
+===
+Event with relationship fields
+===
+
+namespace test
+event VehicleTransferred {
+  --> Vehicle vehicle
+  --> Owner previousOwner
+  --> Owner newOwner
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (event_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))))))
+
+===
+Abstract transaction
+===
+
+namespace test
+abstract transaction BaseTransaction {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (transaction_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Abstract event
+===
+
+namespace test
+abstract event BaseEvent {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (event_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Participant with relationship array
+===
+
+namespace test
+participant Owner identified by email {
+  o String email
+  --> Vehicle[] vehicles optional
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (participant_declaration
+      name: (type_identifier
+        (identifier))
+      (identified_by
+        field: (identifier))
+      (class_body
+        (string_field
+          name: (identifier))
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          (array_indicator)
+          name: (identifier))))))

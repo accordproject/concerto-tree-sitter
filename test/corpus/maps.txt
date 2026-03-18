@@ -1,0 +1,245 @@
+===
+Map with String key and Double value
+===
+
+namespace test
+map CurrencyAmounts {
+  o String
+  o Double
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (map_declaration
+      name: (type_identifier
+        (identifier))
+      (map_body
+        (map_key_type
+          type: (primitive_type))
+        (map_value_type
+          (map_value_property
+            type: (primitive_type)))))))
+
+===
+Map with DateTime key and Integer value
+===
+
+namespace test
+map DateMap {
+  o DateTime
+  o Integer
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (map_declaration
+      name: (type_identifier
+        (identifier))
+      (map_body
+        (map_key_type
+          type: (primitive_type))
+        (map_value_type
+          (map_value_property
+            type: (primitive_type)))))))
+
+===
+Map with object key and object value types
+===
+
+namespace test
+map TypeMapping {
+  o MyEnum
+  o MyType
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (map_declaration
+      name: (type_identifier
+        (identifier))
+      (map_body
+        (map_key_type
+          type: (type_identifier
+            (identifier)))
+        (map_value_type
+          (map_value_property
+            type: (type_identifier
+              (identifier))))))))
+
+===
+Map with relationship value
+===
+
+namespace test
+map AccountHolders {
+  o String
+  --> Person
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (map_declaration
+      name: (type_identifier
+        (identifier))
+      (map_body
+        (map_key_type
+          type: (primitive_type))
+        (map_value_type
+          (map_value_relationship
+            type: (type_identifier
+              (identifier))))))))
+
+===
+Map with String key and Boolean value
+===
+
+namespace test
+map Flags {
+  o String
+  o Boolean
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (map_declaration
+      name: (type_identifier
+        (identifier))
+      (map_body
+        (map_key_type
+          type: (primitive_type))
+        (map_value_type
+          (map_value_property
+            type: (primitive_type)))))))
+
+===
+Map with String key and Long value
+===
+
+namespace test
+map Counters {
+  o String
+  o Long
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (map_declaration
+      name: (type_identifier
+        (identifier))
+      (map_body
+        (map_key_type
+          type: (primitive_type))
+        (map_value_type
+          (map_value_property
+            type: (primitive_type)))))))
+
+===
+Map with String key and String value
+===
+
+namespace test
+map Labels {
+  o String
+  o String
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (map_declaration
+      name: (type_identifier
+        (identifier))
+      (map_body
+        (map_key_type
+          type: (primitive_type))
+        (map_value_type
+          (map_value_property
+            type: (primitive_type)))))))
+
+===
+Map with String key and DateTime value
+===
+
+namespace test
+map Timestamps {
+  o String
+  o DateTime
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (map_declaration
+      name: (type_identifier
+        (identifier))
+      (map_body
+        (map_key_type
+          type: (primitive_type))
+        (map_value_type
+          (map_value_property
+            type: (primitive_type)))))))
+
+===
+Map with decorator
+===
+
+namespace test
+@description("A map type")
+map Labels {
+  o String
+  o String
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (map_declaration
+      (decorators
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_string
+                (string_literal
+                  (string_content_double)))))))
+      name: (type_identifier
+        (identifier))
+      (map_body
+        (map_key_type
+          type: (primitive_type))
+        (map_value_type
+          (map_value_property
+            type: (primitive_type)))))))

@@ -1,0 +1,29 @@
+namespace org.example.imports@1.0.0
+
+// Single type import
+import org.accordproject.time@0.3.0.Duration
+
+// Wildcard import
+import org.accordproject.money@0.3.0.*
+
+// Multiple types import with {}
+import org.accordproject.address@1.0.0.{Country, State, PostalCode}
+
+// Aliased import using "as"
+import org.accordproject.finance@2.0.0.{Currency as Curr, Amount as Amt}
+
+// Single type import with "from" URI
+import org.accordproject.time@0.3.0.TemporalUnit from https://models.accordproject.org/time@0.3.0.cto
+
+// Wildcard import with "from" URI
+import org.accordproject.cicero.contract@0.2.0.* from https://models.accordproject.org/cicero/contract@0.2.0.cto
+
+// Multiple types import with "from" URI
+import org.accordproject.money@0.3.0.{CurrencyCode, MonetaryAmount} from https://models.accordproject.org/money@0.3.0.cto
+
+// Aliased import with "from" URI
+import org.accordproject.geo@1.0.0.{Location as Loc, Coordinate as Coord} from https://models.accordproject.org/geo@1.0.0.cto
+
+concept Placeholder {
+  o String id
+}

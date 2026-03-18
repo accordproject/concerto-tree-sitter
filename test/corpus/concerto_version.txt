@@ -1,0 +1,54 @@
+===
+Concerto version with double-quoted string
+===
+
+concerto version "^3.0.0"
+namespace test
+
+---
+
+(source_file
+  (concerto_version
+    (string_literal
+      (string_content_double)))
+  (namespace_declaration
+    (namespace_path)))
+
+===
+Concerto version with single-quoted string
+===
+
+concerto version '1.0.0'
+namespace test
+
+---
+
+(source_file
+  (concerto_version
+    (string_literal
+      (string_content_single)))
+  (namespace_declaration
+    (namespace_path)))
+
+===
+Concerto version with namespace and declarations
+===
+
+concerto version "^3.0.0"
+namespace org.example@1.0.0
+concept Foo {
+}
+
+---
+
+(source_file
+  (concerto_version
+    (string_literal
+      (string_content_double)))
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body))))

@@ -1,0 +1,73 @@
+concerto version "^3.0.0"
+namespace org.accordproject.finance.loan@0.3.0
+
+import org.accordproject.time@0.3.0.Duration from https://models.accordproject.org/time@0.3.0.cto
+import org.accordproject.money@0.3.0.{CurrencyCode, DigitalCurrencyCode} from https://models.accordproject.org/money@0.3.0.cto
+
+/**
+ * Enum for currency types
+ */
+enum CurrencyType {
+  o MONETARY
+  o CRYPTOMONETARY
+}
+
+concept PaymentFrequency {
+  o Integer periodMultiplier
+  o Duration period
+}
+
+@resource
+abstract concept FinancialInstrument identified {
+  o String[] instrumentId
+  o String description optional
+}
+
+/**
+ * Definition of a Loan, based on the FpML schema
+ */
+concept Loan extends FinancialInstrument {
+  o CurrencyType currencyType
+  o CurrencyCode currencyCode optional
+  o DigitalCurrencyCode digitalCurrencyCode optional
+  o String[] exchangeId optional
+  o String clearanceSystem optional
+  o DateTime maturity
+  o DateTime creditAgreementDate
+  o String tranche optional
+}
+
+scalar PostalCode extends String default = "00000" regex=/^[0-9]{5}$/
+scalar Score extends Integer range=[0,100]
+scalar Rating extends Double range=[0.0, 5.0]
+
+map CurrencyAmounts {
+  o String
+  o Double
+}
+
+asset Vehicle identified by vin {
+  o String vin
+  o String make
+  o String model
+  o Integer year range=[1900,]
+  o Double mileage range=[0.0,]
+}
+
+participant Owner identified by email {
+  o String email
+  o String firstName
+  o String lastName
+  --> Vehicle[] vehicles optional
+}
+
+transaction VehicleTransfer {
+  --> Vehicle vehicle
+  --> Owner newOwner
+}
+
+event VehicleTransferred {
+  --> Vehicle vehicle
+  --> Owner previousOwner
+  --> Owner newOwner
+}

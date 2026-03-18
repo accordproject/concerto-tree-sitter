@@ -1,0 +1,303 @@
+===
+Decorator with no arguments
+===
+
+namespace test
+@simple
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      (decorators
+        (decorator
+          name: (identifier)))
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Decorator with empty parentheses
+===
+
+namespace test
+@empty()
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      (decorators
+        (decorator
+          name: (identifier)
+          (decorator_arguments)))
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Decorator with string argument
+===
+
+namespace test
+@withString("hello")
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      (decorators
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_string
+                (string_literal
+                  (string_content_double)))))))
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Decorator with number argument
+===
+
+namespace test
+@withNumber(42)
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      (decorators
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_number
+                (signed_number))))))
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Decorator with negative number argument
+===
+
+namespace test
+@val(-3.14)
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      (decorators
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_number
+                (signed_number))))))
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Decorator with boolean argument
+===
+
+namespace test
+@withBool(true)
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      (decorators
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_boolean
+                (boolean_literal))))))
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Decorator with identifier reference argument
+===
+
+namespace test
+@withId(MyType)
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      (decorators
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_identifier_ref
+                (type_identifier
+                  (identifier)))))))
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Decorator with multiple mixed arguments
+===
+
+namespace test
+@multi("a", 1, false, MyType)
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      (decorators
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_string
+                (string_literal
+                  (string_content_double)))
+              (decorator_number
+                (signed_number))
+              (decorator_boolean
+                (boolean_literal))
+              (decorator_identifier_ref
+                (type_identifier
+                  (identifier)))))))
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Multiple decorators on a declaration
+===
+
+namespace test
+@foo
+@bar("test")
+@baz(42)
+concept Foo {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      (decorators
+        (decorator
+          name: (identifier))
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_string
+                (string_literal
+                  (string_content_double))))))
+        (decorator
+          name: (identifier)
+          (decorator_arguments
+            (decorator_arg_list
+              (decorator_number
+                (signed_number))))))
+      name: (type_identifier
+        (identifier))
+      (class_body))))
+
+===
+Decorator on a field
+===
+
+namespace test
+concept Foo {
+  @description("The name")
+  o String name
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          (decorators
+            (decorator
+              name: (identifier)
+              (decorator_arguments
+                (decorator_arg_list
+                  (decorator_string
+                    (string_literal
+                      (string_content_double)))))))
+          name: (identifier))))))
+
+===
+Decorator on namespace
+===
+
+@foo
+namespace test
+
+---
+
+(source_file
+  (decorators
+    (decorator
+      name: (identifier)))
+  (namespace_declaration
+    (namespace_path)))

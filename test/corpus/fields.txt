@@ -1,0 +1,568 @@
+===
+String field
+===
+
+namespace test
+concept Foo {
+  o String name
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier))))))
+
+===
+Boolean field
+===
+
+namespace test
+concept Foo {
+  o Boolean active
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (boolean_field
+          name: (identifier))))))
+
+===
+DateTime field
+===
+
+namespace test
+concept Foo {
+  o DateTime created
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (datetime_field
+          name: (identifier))))))
+
+===
+Integer field
+===
+
+namespace test
+concept Foo {
+  o Integer count
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (integer_field
+          name: (identifier))))))
+
+===
+Long field
+===
+
+namespace test
+concept Foo {
+  o Long bigNum
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (long_field
+          name: (identifier))))))
+
+===
+Double field
+===
+
+namespace test
+concept Foo {
+  o Double price
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (double_field
+          name: (identifier))))))
+
+===
+Object field
+===
+
+namespace test
+concept Foo {
+  o MyType custom
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (object_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))))))
+
+===
+Relationship field
+===
+
+namespace test
+concept Foo {
+  --> MyType ref
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))))))
+
+===
+String array field
+===
+
+namespace test
+concept Foo {
+  o String[] names
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          (array_indicator)
+          name: (identifier))))))
+
+===
+Integer array field
+===
+
+namespace test
+concept Foo {
+  o Integer[] counts
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (integer_field
+          (array_indicator)
+          name: (identifier))))))
+
+===
+Relationship array field
+===
+
+namespace test
+concept Foo {
+  --> MyType[] refs
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          (array_indicator)
+          name: (identifier))))))
+
+===
+Optional string field
+===
+
+namespace test
+concept Foo {
+  o String name optional
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier))))))
+
+===
+Optional integer field
+===
+
+namespace test
+concept Foo {
+  o Integer count optional
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (integer_field
+          name: (identifier))))))
+
+===
+Optional relationship field
+===
+
+namespace test
+concept Foo {
+  --> MyType ref optional
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (relationship_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))))))
+
+===
+String field with default
+===
+
+namespace test
+concept Foo {
+  o String name default = "hello"
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier)
+          (string_default
+            (string_literal
+              (string_content_double))))))))
+
+===
+Boolean field with default
+===
+
+namespace test
+concept Foo {
+  o Boolean active default = true
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (boolean_field
+          name: (identifier)
+          (boolean_default
+            (boolean_literal)))))))
+
+===
+Integer field with default
+===
+
+namespace test
+concept Foo {
+  o Integer count default = 42
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (integer_field
+          name: (identifier)
+          (integer_default
+            (signed_integer)))))))
+
+===
+Long field with default
+===
+
+namespace test
+concept Foo {
+  o Long big default = 100
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (long_field
+          name: (identifier)
+          (integer_default
+            (signed_integer)))))))
+
+===
+Double field with default
+===
+
+namespace test
+concept Foo {
+  o Double price default = 9.99
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (double_field
+          name: (identifier)
+          (real_default
+            (signed_real)))))))
+
+===
+DateTime field with default
+===
+
+namespace test
+concept Foo {
+  o DateTime created default = "2024-01-01"
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (datetime_field
+          name: (identifier)
+          (string_default
+            (string_literal
+              (string_content_double))))))))
+
+===
+String field with all modifiers
+===
+
+namespace test
+concept Foo {
+  o String name default = "hi" regex=/^[a-z]+$/ length=[1,10] optional
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (string_field
+          name: (identifier)
+          (string_default
+            (string_literal
+              (string_content_double)))
+          (regex_validator
+            (regex_literal))
+          (length_validator
+            min: (signed_integer)
+            max: (signed_integer)))))))
+
+===
+Integer field with range validator
+===
+
+namespace test
+concept Foo {
+  o Integer age range=[0,150]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (integer_field
+          name: (identifier)
+          (range_validator
+            lower: (signed_real)
+            upper: (signed_real)))))))
+
+===
+Double field with range validator
+===
+
+namespace test
+concept Foo {
+  o Double score range=[0.0,100.0]
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (double_field
+          name: (identifier)
+          (range_validator
+            lower: (signed_real)
+            upper: (signed_real)))))))
+
+===
+Object field with optional
+===
+
+namespace test
+concept Foo {
+  o Address address optional
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (concept_declaration
+      name: (type_identifier
+        (identifier))
+      (class_body
+        (object_field
+          type: (type_identifier
+            (identifier))
+          name: (identifier))))))

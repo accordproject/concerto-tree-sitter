@@ -1,0 +1,26 @@
+namespace org.example.decorators@1.0.0
+
+@resource
+@description("A person in the system")
+@version(1, 0, 0)
+@tags("important", "core")
+concept Person identified by email {
+  @label("Email Address")
+  @required
+  o String email
+
+  @label("First Name")
+  o String firstName
+
+  @label("Last Name")  
+  o String lastName
+
+  @label("Age")
+  @range(0, 150)
+  o Integer age optional
+
+  @deprecated("Use fullName instead")
+  o String displayName optional
+
+  o Boolean active default = true
+}

@@ -1,0 +1,130 @@
+===
+Basic enum
+===
+
+namespace test
+enum Color {
+  o RED
+  o GREEN
+  o BLUE
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (enum_declaration
+      name: (type_identifier
+        (identifier))
+      (enum_body
+        (enum_property
+          name: (identifier))
+        (enum_property
+          name: (identifier))
+        (enum_property
+          name: (identifier))))))
+
+===
+Empty enum
+===
+
+namespace test
+enum Empty {
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (enum_declaration
+      name: (type_identifier
+        (identifier))
+      (enum_body))))
+
+===
+Enum with decorator on declaration
+===
+
+namespace test
+@foo
+enum Color {
+  o RED
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (enum_declaration
+      (decorators
+        (decorator
+          name: (identifier)))
+      name: (type_identifier
+        (identifier))
+      (enum_body
+        (enum_property
+          name: (identifier))))))
+
+===
+Enum with decorated properties
+===
+
+namespace test
+@foo
+enum Color {
+  @bar
+  o RED
+  o GREEN
+  o BLUE
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (enum_declaration
+      (decorators
+        (decorator
+          name: (identifier)))
+      name: (type_identifier
+        (identifier))
+      (enum_body
+        (enum_property
+          (decorators
+            (decorator
+              name: (identifier)))
+          name: (identifier))
+        (enum_property
+          name: (identifier))
+        (enum_property
+          name: (identifier))))))
+
+===
+Single value enum
+===
+
+namespace test
+enum Singleton {
+  o ONLY
+}
+
+---
+
+(source_file
+  (namespace_declaration
+    (namespace_path))
+  (declaration_list
+    (enum_declaration
+      name: (type_identifier
+        (identifier))
+      (enum_body
+        (enum_property
+          name: (identifier))))))

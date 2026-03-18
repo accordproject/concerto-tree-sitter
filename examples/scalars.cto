@@ -1,0 +1,47 @@
+namespace org.example.scalars@1.0.0
+
+// Boolean scalar with default
+scalar Enabled extends Boolean default = true
+scalar Disabled extends Boolean default = false
+
+// Integer scalar with default and range
+scalar SmallInt extends Integer default = 0 range=[0, 255]
+scalar Port extends Integer range=[1, 65535]
+scalar Temperature extends Integer range=[-273,]
+scalar NegativeInt extends Integer range=[, -1]
+
+// Long scalar with default and range
+scalar BigId extends Long default = 0 range=[0,]
+scalar Timestamp extends Long range=[0, 9999999999999]
+
+// Double scalar with default and range
+scalar Percentage extends Double default = 0.0 range=[0.0, 100.0]
+scalar Latitude extends Double range=[-90.0, 90.0]
+scalar Longitude extends Double range=[-180.0, 180.0]
+scalar PositiveDouble extends Double range=[0.0,]
+
+// String scalar with default
+scalar Greeting extends String default = "hello"
+
+// String scalar with regex validator
+scalar Email extends String regex=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+scalar PhoneNumber extends String regex=/^\+?[0-9]{7,15}$/
+
+// String scalar with length validator
+scalar ShortName extends String length=[1, 50]
+scalar LongText extends String length=[,10000]
+scalar NonEmpty extends String length=[1,]
+
+// String scalar with default, regex, and length
+scalar PostalCode extends String default = "00000" regex=/^[0-9]{5}$/ length=[5, 5]
+
+// DateTime scalar with default
+scalar DefaultDate extends DateTime default = "1970-01-01T00:00:00.000Z"
+scalar CreatedAt extends DateTime
+
+concept Example {
+  o Email email
+  o PostalCode zip
+  o Percentage score
+  o Enabled active
+}
