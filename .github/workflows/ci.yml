@@ -12,6 +12,9 @@ on:
       - bindings/**
       - tree-sitter.json
       - package.json
+      - Cargo.toml
+      - go.mod
+      - .github/workflows/ci.yml
   pull_request:
     paths:
       - grammar.js
@@ -22,6 +25,9 @@ on:
       - bindings/**
       - tree-sitter.json
       - package.json
+      - Cargo.toml
+      - go.mod
+      - .github/workflows/ci.yml
 
 concurrency:
   group: ${{github.workflow}}-${{github.ref}}
@@ -73,3 +79,49 @@ jobs:
 
       - name: Run query validation tests
         run: bash test/test-queries.sh
+
+  test-rust-binding:
+    name: Test Rust binding
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run Rust tests
+        run: cargo test
+
+  test-node-binding:
+    name: Test Node binding
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Node binding test
+        run: node --test bindings/node/binding_test.js
+
+  test-go-binding:
+    name: Test Go binding
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Run Go tests
+        run: go test ./bindings/go/
