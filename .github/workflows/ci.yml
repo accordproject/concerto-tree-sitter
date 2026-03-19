@@ -94,7 +94,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install ts_query_ls
-        run: cargo install ts_query_ls
+        run: cargo install ts_query_ls --version 3.16.0 --locked
 
       - name: Generate and build parser
         run: |

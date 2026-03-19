@@ -321,7 +321,7 @@ Architect Agent (orchestrator)
 - **Binding tests in CI**: 2 (Rust, Go)
 - **Total test checks**: 322+
 - **Test pass rate**: 100%
-- **CI jobs**: 7 (3× parser, query validation, Rust binding, Go binding, DCO)
+- **CI jobs**: 8 (3× parser, query validation, ts_query_ls lint, Rust binding, Go binding, DCO)
 - **Example files**: 6 validated .cto files
 - **Syntax highlighting queries**: 230+ lines covering all node types
 - **Text object queries**: 108 lines, 5 capture groups (`@class`, `@block`, `@parameter`, `@assignment`, `@comment`)
