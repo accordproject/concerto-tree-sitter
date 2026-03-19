@@ -366,7 +366,7 @@ mkdir -p ~/.config/helix/runtime/queries/concerto
 cp editor/helix/queries/concerto/*.scm ~/.config/helix/runtime/queries/concerto/
 ```
 
-Or symlink them for development:
+Or symlink them for development (run from the repo root):
 
 ```bash
 mkdir -p ~/.config/helix/runtime/queries/concerto
