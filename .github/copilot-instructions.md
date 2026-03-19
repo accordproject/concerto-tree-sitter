@@ -34,10 +34,11 @@ Co-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>
 
 ## Tech Stack
 
-- **Grammar**: tree-sitter JavaScript DSL (`grammar.js`)
+- **Grammar**: tree-sitter JavaScript DSL (`grammar.js`, ESM)
 - **Generated parser**: C (`src/parser.c` — auto-generated, do not edit)
 - **Queries**: tree-sitter S-expression queries (`queries/*.scm`)
-- **Tests**: tree-sitter corpus tests (`test/corpus/`), highlight assertion tests (`test/highlight/`), shell-based query validation (`test/test-queries.sh`)
+- **Language bindings**: C, Node.js, Rust, Python, Go, Swift (in `bindings/`)
+- **Tests**: tree-sitter corpus tests (`test/corpus/`), highlight assertion tests (`test/highlight/`), shell-based query validation (`test/test-queries.sh`), Rust and Go binding tests
 - **CLI**: tree-sitter CLI v0.26.7
 
 ## Testing
@@ -47,17 +48,23 @@ Always run tests after making changes:
 ```bash
 tree-sitter test                # Corpus + highlight tests
 bash test/test-queries.sh       # Query validation tests
+cargo test                      # Rust binding test
 ```
 
 ## Key Files
 
-- `grammar.js` — The grammar definition (source of truth)
+- `grammar.js` — The grammar definition (source of truth, ESM)
 - `queries/highlights.scm` — Syntax highlighting
 - `queries/textobjects.scm` — Structural text objects (dual Neovim + Helix captures)
 - `queries/locals.scm` — Scope and reference tracking
 - `queries/indents.scm` — Auto-indentation
 - `queries/folds.scm` — Code folding
 - `src/` — Generated C parser (do not edit manually)
+- `bindings/` — Language bindings (C, Node.js, Rust, Python, Go, Swift)
+- `Cargo.toml` — Rust crate manifest
+- `go.mod` — Go module manifest
+- `pyproject.toml` — Python package manifest
+- `Package.swift` — Swift package manifest
 
 ## Conventions
 
