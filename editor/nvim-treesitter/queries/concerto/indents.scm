@@ -7,10 +7,10 @@
   (enum_body)
   (map_body)
   (decorator_arguments)
-] @indent
+] @indent.begin
 
 ; Outdent at closing braces
 [
   "}"
   ")"
-] @outdent
+] @indent.end
