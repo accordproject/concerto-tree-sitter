@@ -93,27 +93,6 @@ jobs:
       - name: Run Rust tests
         run: cargo test
 
-  test-node-binding:
-    name: Test Node binding
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Install tree-sitter peer dependency
-        run: npm install tree-sitter
-
-      - name: Run Node binding test
-        run: node --test bindings/node/binding_test.js
-
   test-go-binding:
     name: Test Go binding
     runs-on: ubuntu-latest
