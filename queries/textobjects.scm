@@ -1,69 +1,63 @@
 ; Concerto Language - Text Object Queries
 ; =========================================
-; Compatible with nvim-treesitter-textobjects
+; Compatible with nvim-treesitter-textobjects and Helix.
 ;
-; Uses #make-range! to create proper inner ranges that exclude braces.
-; Note: #make-range! is supported by nvim-treesitter-textobjects but NOT
-; by mini.ai. If using mini.ai, you may need simpler capture patterns.
+; Uses standard `_+ @capture` patterns (no custom directives).
+; Works with Neovim 0.10+, nvim-treesitter-textobjects, and Helix.
+;
+; For Helix, map capture names: .outer -> .around, .inner -> .inside
 
 ; Classes / declarations (@class.outer, @class.inner)
 ; vac / vic — select whole declaration / body contents (excluding braces)
 
 (concept_declaration
   (class_body
-    . "{" .
-    (_) @_start @_end
-    (_)? @_end
-    . "}"
-    (#make-range! "class.inner" @_start @_end))) @class.outer
+    .
+    "{"
+    _+ @class.inner
+    "}")) @class.outer
 
 (asset_declaration
   (class_body
-    . "{" .
-    (_) @_start @_end
-    (_)? @_end
-    . "}"
-    (#make-range! "class.inner" @_start @_end))) @class.outer
+    .
+    "{"
+    _+ @class.inner
+    "}")) @class.outer
 
 (participant_declaration
   (class_body
-    . "{" .
-    (_) @_start @_end
-    (_)? @_end
-    . "}"
-    (#make-range! "class.inner" @_start @_end))) @class.outer
+    .
+    "{"
+    _+ @class.inner
+    "}")) @class.outer
 
 (transaction_declaration
   (class_body
-    . "{" .
-    (_) @_start @_end
-    (_)? @_end
-    . "}"
-    (#make-range! "class.inner" @_start @_end))) @class.outer
+    .
+    "{"
+    _+ @class.inner
+    "}")) @class.outer
 
 (event_declaration
   (class_body
-    . "{" .
-    (_) @_start @_end
-    (_)? @_end
-    . "}"
-    (#make-range! "class.inner" @_start @_end))) @class.outer
+    .
+    "{"
+    _+ @class.inner
+    "}")) @class.outer
 
 (enum_declaration
   (enum_body
-    . "{" .
-    (_) @_start @_end
-    (_)? @_end
-    . "}"
-    (#make-range! "class.inner" @_start @_end))) @class.outer
+    .
+    "{"
+    _+ @class.inner
+    "}")) @class.outer
 
 (map_declaration
   (map_body
-    . "{" .
-    (_) @_start @_end
-    (_)? @_end
-    . "}"
-    (#make-range! "class.inner" @_start @_end))) @class.outer
+    .
+    "{"
+    _+ @class.inner
+    "}")) @class.outer
 
 ; Scalar declarations have no body braces — outer only
 (scalar_declaration) @class.outer
@@ -72,25 +66,22 @@
 ; vab / vib — select whole block / block contents (excluding braces)
 
 (class_body
-  . "{" .
-  (_) @_start @_end
-  (_)? @_end
-  . "}"
-  (#make-range! "block.inner" @_start @_end)) @block.outer
+  .
+  "{"
+  _+ @block.inner
+  "}") @block.outer
 
 (enum_body
-  . "{" .
-  (_) @_start @_end
-  (_)? @_end
-  . "}"
-  (#make-range! "block.inner" @_start @_end)) @block.outer
+  .
+  "{"
+  _+ @block.inner
+  "}") @block.outer
 
 (map_body
-  . "{" .
-  (_) @_start @_end
-  (_)? @_end
-  . "}"
-  (#make-range! "block.inner" @_start @_end)) @block.outer
+  .
+  "{"
+  _+ @block.inner
+  "}") @block.outer
 
 ; Comments (@comment.outer)
 (line_comment) @comment.outer

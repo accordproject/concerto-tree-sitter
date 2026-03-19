@@ -8,6 +8,7 @@
       "file-types": ["cto"],
       "highlights": "queries/highlights.scm",
       "locals": "queries/locals.scm",
+      "folds": "queries/folds.scm",
       "path": "."
     }
   ],

@@ -212,6 +212,44 @@ Architect Agent (orchestrator)
     +-- Architect: Wrote README.md and agents.md
     |
     +-- Architect: Created highlight tests, query validation, CI pipeline (Phase 8)
+    |
+    +-- Architect: Rewrote textobjects.scm, added folds.scm, updated README (Phase 9)
+```
+
+### Phase 9: Editor Compatibility Fix
+
+**Objective**: Fix broken tree-sitter motions in Neovim and Helix caused by the deprecated `#make-range!` directive.
+
+**Root cause**: The `#make-range!` directive was a custom extension by nvim-treesitter, not part of tree-sitter core. It was deprecated and removed in the nvim-treesitter 1.0 refactor (2024-2025). Neovim 0.11+ has no handler for it, causing `E5108: No handler for make-range!` on any textobject motion (`]c`, `vic`, etc.). Helix never supported `#make-range!` at all.
+
+**Changes made**:
+
+| Change | Description |
+|---|---|
+| Rewrote `textobjects.scm` | Replaced all `#make-range!` directives with standard `_+ @capture` patterns (matching the approach used by Python, Rust, and C in nvim-treesitter-textobjects) |
+| Added `folds.scm` | New query file for code folding support (declaration bodies, block comments, decorator arguments) |
+| Updated `tree-sitter.json` | Added `folds` reference |
+| Updated README | Modernized Neovim install instructions, added complete Helix setup guide with query file copy steps, updated test counts and text object documentation |
+| Updated test script | Added `@class.inner`, `@block.inner`, and `@fold` capture assertions |
+
+**Text object pattern migration**:
+```scheme
+; BEFORE (broken — #make-range! not supported in Neovim 0.11+ or Helix):
+(concept_declaration
+  (class_body
+    . "{" .
+    (_) @_start @_end
+    (_)? @_end
+    . "}"
+    (#make-range! "class.inner" @_start @_end))) @class.outer
+
+; AFTER (works everywhere — standard tree-sitter pattern):
+(concept_declaration
+  (class_body
+    .
+    "{"
+    _+ @class.inner
+    "}")) @class.outer
 ```
 
 ## Metrics
@@ -220,11 +258,12 @@ Architect Agent (orchestrator)
 - **Generated parser**: ~47,000 lines of C
 - **Test corpus**: 120 tests across 12 files
 - **Highlight tests**: 129 assertions across 4 files
-- **Query validation tests**: 53 tests
-- **Total test checks**: 302
+- **Query validation tests**: 63 tests
+- **Total test checks**: 312
 - **Test pass rate**: 100%
 - **Example files**: 6 validated .cto files
 - **Syntax highlighting queries**: 230+ lines covering all node types
-- **Text object queries**: 128 lines, 5 capture groups (`@class`, `@block`, `@parameter`, `@assignment`, `@comment`)
+- **Text object queries**: 108 lines, 5 capture groups (`@class`, `@block`, `@parameter`, `@assignment`, `@comment`)
+- **Fold queries**: 12 lines covering all foldable node types
 - **Development time**: Single session, iterative approach
 - **Conflicts in grammar**: 0 (clean generation)
