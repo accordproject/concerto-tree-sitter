@@ -22,7 +22,7 @@
       }
     ],
     "links": {
-      "repository": "https://github.com/accordproject/tree-sitter-concerto"
+      "repository": "https://github.com/accordproject/concerto-tree-sitter"
     }
   }
 }
