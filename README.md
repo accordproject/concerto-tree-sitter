@@ -9,8 +9,9 @@ Concerto is a lightweight, object-oriented data modeling (schema) language desig
 ## Features
 
 - **Complete grammar** covering the full Concerto CTO language specification
-- **120 corpus tests** all passing, plus **129 highlight assertions** and **63 query validation tests**
-- **CI pipeline** via GitHub Actions (multi-platform parser tests, query validation)
+- **Language bindings** for C, Node.js, Rust, Python, Go, and Swift
+- **120 corpus tests** all passing, plus **129 highlight assertions** and **71 query validation tests**
+- **CI pipeline** via GitHub Actions (multi-platform parser tests, query validation, Rust and Go binding tests)
 - **Syntax highlighting queries** for editor integration
 - **Text object queries** for structural editing (compatible with nvim-treesitter-textobjects and Helix)
 - **Fold queries** for code folding
@@ -172,13 +173,28 @@ The parser produces a concrete syntax tree like:
 ## Project Structure
 
 ```
-tree-sitter-concerto/
-  grammar.js          # The tree-sitter grammar definition
+concerto-tree-sitter/
+  grammar.js          # The tree-sitter grammar definition (ESM)
   tree-sitter.json    # Tree-sitter configuration
   package.json        # Node.js package manifest
+  Cargo.toml          # Rust crate manifest
+  go.mod              # Go module manifest
+  pyproject.toml      # Python package manifest
+  Package.swift       # Swift package manifest
+  CMakeLists.txt      # CMake build configuration
+  Makefile            # C library build
+  binding.gyp         # Node.js native addon build
   .github/
     workflows/
       ci.yml          # GitHub Actions CI pipeline
+    copilot-instructions.md  # GitHub Copilot instructions
+  bindings/
+    c/                # C header and pkg-config template
+    node/             # Node.js native addon binding
+    rust/             # Rust crate binding
+    python/           # Python C extension binding
+    go/               # Go cgo binding
+    swift/            # Swift package binding
   queries/
     highlights.scm    # Syntax highlighting queries
     textobjects.scm   # Text object queries (Neovim + Helix compatible)
@@ -188,7 +204,7 @@ tree-sitter-concerto/
   test/
     corpus/           # Tree-sitter test corpus (120 tests)
     highlight/        # Syntax highlighting assertion tests (129 assertions)
-    test-queries.sh   # Query validation test script (63 tests)
+    test-queries.sh   # Query validation test script (71 tests)
   examples/           # Example .cto files (validated with concerto-cli)
   src/                # Generated C parser (auto-generated, do not edit)
 ```
@@ -429,7 +445,7 @@ The project has three layers of testing:
 - Uses tree-sitter's built-in Sublime Text–style assertion format
 - Run automatically as part of `tree-sitter test`
 
-**3. Query validation tests** (63 tests in `test/test-queries.sh`)
+**3. Query validation tests** (71 tests in `test/test-queries.sh`)
 - Verifies all 5 query files compile and execute against all 6 examples without errors
 - Asserts expected textobject captures (`@class.outer`, `@class.inner`, `@block.outer`, `@block.inner`, `@parameter.inner`, `@assignment.*`, `@comment.outer`) are present
 - Asserts expected fold captures are present
