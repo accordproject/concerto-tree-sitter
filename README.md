@@ -244,7 +244,7 @@ With those mappings, you can use motions like `vic` (select fields inside a decl
 
 ### Neovim
 
-> **Note:** The parser is not yet in the nvim-treesitter registry, so `:TSInstall concerto` will not work. Use one of the manual methods below.
+> **Note:** The parser is not yet in the nvim-treesitter registry, so `:TSInstall concerto` will not work *by default* until you add the parser to the registry (for example via a custom `parser_config`) or use one of the manual methods below.
 
 #### Step 1: Register the `.cto` filetype
 
@@ -270,8 +270,13 @@ cc -shared -fPIC -o concerto.so src/parser.c -I src
 Copy the compiled parser to Neovim's parser directory:
 
 ```bash
-# macOS / Linux
+# macOS / Linux (default XDG data directory)
+mkdir -p ~/.local/share/nvim/site/parser
 cp concerto.so ~/.local/share/nvim/site/parser/concerto.so
+
+# If you use a non-default XDG_DATA_HOME, you can instead run:
+# mkdir -p "$XDG_DATA_HOME/nvim/site/parser"
+# cp concerto.so "$XDG_DATA_HOME/nvim/site/parser/concerto.so"
 ```
 
 #### Step 3: Install query files
