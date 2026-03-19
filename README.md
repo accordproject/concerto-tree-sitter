@@ -195,26 +195,30 @@ tree-sitter-concerto/
 
 ## Text Objects
 
-The `queries/textobjects.scm` file provides structural text objects compatible with [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) and [Helix](https://helix-editor.com/).
+The `queries/textobjects.scm` file provides structural text objects compatible with both [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) and [Helix](https://helix-editor.com/) using a dual-capture naming pattern.
 
-| Text Object | Inner (`i`) | Outer (`a`) | Description |
+Each node carries both naming conventions (e.g. `@class.outer @class.around`). Each editor reads only the captures it recognises and ignores the rest.
+
+| Concept | Neovim captures | Helix captures | Description |
 |---|---|---|---|
-| `@class` | Body contents (excluding braces) | Entire declaration including decorators | Works on concept, asset, participant, transaction, event, enum, map, scalar declarations |
-| `@block` | Block contents (excluding braces) | Entire `{ }` block | Works on class, enum, and map bodies |
-| `@parameter` | Individual field/property | — | Works on all field types, enum values, map key/value types |
-| `@assignment` | The assigned value | Entire `default = <value>` clause | Works on all default value clauses |
-| `@comment` | — | Entire comment | Works on line and block comments |
+| Class | `@class.outer` / `@class.inner` | `@class.around` / `@class.inside` | concept, asset, participant, transaction, event, enum, map, scalar |
+| Block | `@block.outer` / `@block.inner` | — | class, enum, and map bodies (Neovim only) |
+| Parameter | `@parameter.inner` | `@parameter.inside` | All field types, enum values, map key/value types |
+| Assignment | `@assignment.outer` / `@assignment.inner` | — | Default value clauses (Neovim only) |
+| Comment | `@comment.outer` | `@comment.around` / `@comment.inside` | Line and block comments |
 
-**Example keybindings** (with nvim-treesitter-textobjects configured):
+**Neovim keybindings** (with nvim-treesitter-textobjects):
 - `vic` — select the fields inside a concept (excluding braces)
 - `vac` — select an entire declaration including its decorators
 - `]c` / `[c` — jump to the next / previous declaration
 - `dap` — delete a single field declaration
 - `cia` — change the value in a `default = ...` clause
 
-**Helix navigation**: `]c` / `[c` for class navigation, `mac` / `mic` for select around/inside class.
-
-> **Note**: Helix uses `class.around`/`class.inside` naming internally but reads `.outer`/`.inner` from query files automatically. No conversion needed.
+**Helix keybindings**:
+- `]c` / `[c` — jump to next / previous declaration
+- `mac` / `mic` — select around / inside a declaration
+- `]a` / `[a` — jump to next / previous parameter (field)
+- `]C` / `[C` — jump to next / previous comment
 
 ## Editor Integration
 

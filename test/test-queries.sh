@@ -62,15 +62,17 @@ assert_capture() {
   fi
 }
 
-# @class.outer should match enum and concept declarations
-assert_capture "class.outer" "@class.outer matches enum declaration"
-assert_capture "class.outer" "@class.outer matches concept declaration"
+# Neovim captures
+assert_capture "class.outer" "@class.outer matches declarations (Neovim)"
+assert_capture "class.inner" "@class.inner matches body contents (Neovim)"
+assert_capture "block.outer" "@block.outer matches declaration bodies (Neovim)"
+assert_capture "parameter.inner" "@parameter.inner matches fields/properties (Neovim)"
 
-# @block.outer should match class and enum bodies
-assert_capture "block.outer" "@block.outer matches declaration bodies"
+# Helix captures (dual-named on same nodes)
+assert_capture "class.around" "@class.around matches declarations (Helix)"
+assert_capture "class.inside" "@class.inside matches body contents (Helix)"
+assert_capture "parameter.inside" "@parameter.inside matches fields/properties (Helix)"
 
-# @parameter.inner should match fields and enum properties
-assert_capture "parameter.inner" "@parameter.inner matches fields/properties"
 
 # ---------------------------------------------------------------------------
 # Section 3: Verify textobjects captures on examples/advanced.cto
@@ -94,7 +96,9 @@ assert_adv_capture() {
 assert_adv_capture "class.outer" "@class.outer present for declarations"
 assert_adv_capture "block.outer" "@block.outer present for bodies"
 assert_adv_capture "parameter.inner" "@parameter.inner present for fields"
-assert_adv_capture "comment.outer" "@comment.outer matches comments"
+assert_adv_capture "comment.outer" "@comment.outer matches comments (Neovim)"
+assert_adv_capture "comment.around" "@comment.around matches comments (Helix)"
+assert_adv_capture "comment.inside" "@comment.inside matches comments (Helix)"
 
 # Relationship fields (-->)
 # Relationship fields contain --> in the captured text
@@ -108,11 +112,14 @@ fi
 assert_adv_capture "assignment.outer" "@assignment.outer matches default clauses"
 assert_adv_capture "assignment.inner" "@assignment.inner matches default values"
 
-# @class.inner should match body contents (excluding braces)
-assert_adv_capture "class.inner" "@class.inner present for declaration bodies"
+# Neovim inner captures
+assert_adv_capture "class.inner" "@class.inner present for declaration bodies (Neovim)"
+assert_adv_capture "block.inner" "@block.inner present for block bodies (Neovim)"
 
-# @block.inner should match block contents (excluding braces)
-assert_adv_capture "block.inner" "@block.inner present for block bodies"
+# Helix captures on advanced example
+assert_adv_capture "class.around" "@class.around present for declarations (Helix)"
+assert_adv_capture "class.inside" "@class.inside present for declaration bodies (Helix)"
+assert_adv_capture "parameter.inside" "@parameter.inside present for fields (Helix)"
 
 # ---------------------------------------------------------------------------
 # Section 4: Verify textobjects captures on examples/maps.cto

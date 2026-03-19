@@ -1,68 +1,73 @@
 ; Concerto Language - Text Object Queries
 ; =========================================
-; Compatible with nvim-treesitter-textobjects and Helix.
+; Dual-capture pattern for cross-editor compatibility:
+;   Neovim (nvim-treesitter-textobjects): @class.outer / @class.inner
+;   Helix:                                @class.around / @class.inside
 ;
-; Uses standard `_+ @capture` patterns (no custom directives).
-; Works with Neovim 0.10+, nvim-treesitter-textobjects, and Helix.
-;
-; For Helix, map capture names: .outer -> .around, .inner -> .inside
+; Both sets of captures coexist on the same nodes. Each editor reads
+; only the names it recognises and ignores the rest.
 
-; Classes / declarations (@class.outer, @class.inner)
-; vac / vic — select whole declaration / body contents (excluding braces)
+; ---------------------------------------------------------------------------
+; Classes / declarations
+; ---------------------------------------------------------------------------
+; Neovim: vac / vic — select whole declaration / body contents
+; Helix:  ]c / [c — jump next/prev class, mac / mic — select around/inside
 
 (concept_declaration
   (class_body
     .
     "{"
-    _+ @class.inner
-    "}")) @class.outer
+    _+ @class.inner @class.inside
+    "}")) @class.outer @class.around
 
 (asset_declaration
   (class_body
     .
     "{"
-    _+ @class.inner
-    "}")) @class.outer
+    _+ @class.inner @class.inside
+    "}")) @class.outer @class.around
 
 (participant_declaration
   (class_body
     .
     "{"
-    _+ @class.inner
-    "}")) @class.outer
+    _+ @class.inner @class.inside
+    "}")) @class.outer @class.around
 
 (transaction_declaration
   (class_body
     .
     "{"
-    _+ @class.inner
-    "}")) @class.outer
+    _+ @class.inner @class.inside
+    "}")) @class.outer @class.around
 
 (event_declaration
   (class_body
     .
     "{"
-    _+ @class.inner
-    "}")) @class.outer
+    _+ @class.inner @class.inside
+    "}")) @class.outer @class.around
 
 (enum_declaration
   (enum_body
     .
     "{"
-    _+ @class.inner
-    "}")) @class.outer
+    _+ @class.inner @class.inside
+    "}")) @class.outer @class.around
 
 (map_declaration
   (map_body
     .
     "{"
-    _+ @class.inner
-    "}")) @class.outer
+    _+ @class.inner @class.inside
+    "}")) @class.outer @class.around
 
-; Scalar declarations have no body braces — outer only
-(scalar_declaration) @class.outer
+; Scalar declarations have no body braces — outer/around only
+(scalar_declaration) @class.outer @class.around
 
-; Block (@block.outer, @block.inner)
+; ---------------------------------------------------------------------------
+; Block (Neovim only — Helix has no @block capture)
+; ---------------------------------------------------------------------------
 ; vab / vib — select whole block / block contents (excluding braces)
 
 (class_body
@@ -83,27 +88,39 @@
   _+ @block.inner
   "}") @block.outer
 
-; Comments (@comment.outer)
-(line_comment) @comment.outer
-(block_comment) @comment.outer
+; ---------------------------------------------------------------------------
+; Comments
+; ---------------------------------------------------------------------------
+; Neovim: @comment.outer
+; Helix:  @comment.around / @comment.inside, ]C / [C for navigation
 
-; Parameters (@parameter.inner) — fields and enum values
-; dap / vip — operate on individual field/property declarations
-; These are the closest analog to "parameters" in a schema language
+(line_comment) @comment.outer @comment.inside
+(block_comment) @comment.outer @comment.inside
 
-(string_field) @parameter.inner
-(boolean_field) @parameter.inner
-(datetime_field) @parameter.inner
-(integer_field) @parameter.inner
-(long_field) @parameter.inner
-(double_field) @parameter.inner
-(object_field) @parameter.inner
-(relationship_field) @parameter.inner
-(enum_property) @parameter.inner
-(map_key_type) @parameter.inner
-(map_value_type) @parameter.inner
+(line_comment) @comment.around
+(block_comment) @comment.around
 
-; Assignment (@assignment.outer, @assignment.inner)
+; ---------------------------------------------------------------------------
+; Parameters — fields, enum values, map entries
+; ---------------------------------------------------------------------------
+; Neovim: @parameter.inner — dap / vip
+; Helix:  @parameter.inside — ]a / [a for navigation, mia / maa to select
+
+(string_field) @parameter.inner @parameter.inside
+(boolean_field) @parameter.inner @parameter.inside
+(datetime_field) @parameter.inner @parameter.inside
+(integer_field) @parameter.inner @parameter.inside
+(long_field) @parameter.inner @parameter.inside
+(double_field) @parameter.inner @parameter.inside
+(object_field) @parameter.inner @parameter.inside
+(relationship_field) @parameter.inner @parameter.inside
+(enum_property) @parameter.inner @parameter.inside
+(map_key_type) @parameter.inner @parameter.inside
+(map_value_type) @parameter.inner @parameter.inside
+
+; ---------------------------------------------------------------------------
+; Assignment (Neovim only — Helix has no @assignment capture)
+; ---------------------------------------------------------------------------
 ; daa / via — operate on default value clauses
 
 (string_default
