@@ -11,7 +11,7 @@ Concerto is a lightweight, object-oriented data modeling (schema) language desig
 - **Complete grammar** covering the full Concerto CTO language specification
 - **Language bindings** for C, Node.js, Rust, Python, Go, and Swift
 - **120 corpus tests** all passing, plus **129 highlight assertions** and **71 query validation tests**
-- **CI pipeline** via GitHub Actions (multi-platform parser tests, query validation, Rust and Go binding tests)
+- **CI pipeline** via GitHub Actions (multi-platform parser tests, query validation, ts_query_ls lint, Rust and Go binding tests)
 - **Syntax highlighting queries** for editor integration
 - **Text object queries** for structural editing (compatible with nvim-treesitter-textobjects and Helix)
 - **Fold queries** for code folding

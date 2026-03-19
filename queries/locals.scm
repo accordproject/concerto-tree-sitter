@@ -1,21 +1,24 @@
 ; Concerto Language - Locals Queries
 ; ===================================
-
 ; Scopes
 ; ------
-
 ; Each declaration body creates a new scope
 (concept_declaration) @local.scope
+
 (asset_declaration) @local.scope
+
 (participant_declaration) @local.scope
+
 (transaction_declaration) @local.scope
+
 (event_declaration) @local.scope
+
 (enum_declaration) @local.scope
+
 (map_declaration) @local.scope
 
 ; Definitions
 ; -----------
-
 ; Type declarations define types
 (concept_declaration
   name: (type_identifier) @local.definition)
@@ -71,7 +74,6 @@
 
 ; References
 ; ----------
-
 ; Type references
 (extends_clause
   (type_identifier) @local.reference)

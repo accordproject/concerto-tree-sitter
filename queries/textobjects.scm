@@ -6,13 +6,11 @@
 ;
 ; Both sets of captures coexist on the same nodes. Each editor reads
 ; only the names it recognises and ignores the rest.
-
 ; ---------------------------------------------------------------------------
 ; Classes / declarations
 ; ---------------------------------------------------------------------------
 ; Neovim: vac / vic — select whole declaration / body contents
 ; Helix:  ]c / [c — jump next/prev class, mac / mic — select around/inside
-
 (concept_declaration
   (class_body
     .
@@ -69,7 +67,6 @@
 ; Block (Neovim only — Helix has no @block capture)
 ; ---------------------------------------------------------------------------
 ; vab / vib — select whole block / block contents (excluding braces)
-
 (class_body
   .
   "{"
@@ -93,11 +90,12 @@
 ; ---------------------------------------------------------------------------
 ; Neovim: @comment.outer
 ; Helix:  @comment.around / @comment.inside, ]C / [C for navigation
-
 (line_comment) @comment.outer @comment.inside
+
 (block_comment) @comment.outer @comment.inside
 
 (line_comment) @comment.around
+
 (block_comment) @comment.around
 
 ; ---------------------------------------------------------------------------
@@ -105,32 +103,44 @@
 ; ---------------------------------------------------------------------------
 ; Neovim: @parameter.inner — dap / vip
 ; Helix:  @parameter.inside — ]a / [a for navigation, mia / maa to select
-
 (string_field) @parameter.inner @parameter.inside
+
 (boolean_field) @parameter.inner @parameter.inside
+
 (datetime_field) @parameter.inner @parameter.inside
+
 (integer_field) @parameter.inner @parameter.inside
+
 (long_field) @parameter.inner @parameter.inside
+
 (double_field) @parameter.inner @parameter.inside
+
 (object_field) @parameter.inner @parameter.inside
+
 (relationship_field) @parameter.inner @parameter.inside
+
 (enum_property) @parameter.inner @parameter.inside
+
 (map_key_type) @parameter.inner @parameter.inside
+
 (map_value_type) @parameter.inner @parameter.inside
 
 ; ---------------------------------------------------------------------------
 ; Assignment (Neovim only — Helix has no @assignment capture)
 ; ---------------------------------------------------------------------------
 ; daa / via — operate on default value clauses
-
 (string_default
-  "=" (_) @assignment.inner) @assignment.outer
+  "="
+  (_) @assignment.inner) @assignment.outer
 
 (boolean_default
-  "=" (_) @assignment.inner) @assignment.outer
+  "="
+  (_) @assignment.inner) @assignment.outer
 
 (integer_default
-  "=" (_) @assignment.inner) @assignment.outer
+  "="
+  (_) @assignment.inner) @assignment.outer
 
 (real_default
-  "=" (_) @assignment.inner) @assignment.outer
+  "="
+  (_) @assignment.inner) @assignment.outer

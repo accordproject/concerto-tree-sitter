@@ -1,6 +1,5 @@
 ; Concerto Language - Indent Queries
 ; ===================================
-
 ; Indent inside declaration bodies
 [
   (class_body)

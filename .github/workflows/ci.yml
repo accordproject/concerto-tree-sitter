@@ -80,6 +80,38 @@ jobs:
       - name: Run query validation tests
         run: bash test/test-queries.sh
 
+  lint-queries:
+    name: Lint queries (ts_query_ls)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action/cli@v2
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install ts_query_ls
+        run: cargo install ts_query_ls --version 3.16.0 --locked
+
+      - name: Generate and build parser
+        run: |
+          tree-sitter generate
+          tree-sitter build -o concerto.so
+
+      - name: Lint and check query formatting
+        run: |
+          # ts_query_ls expects queries under queries/<language>/ to determine
+          # the language name. Grammar repos store queries at queries/ directly,
+          # so we create a temporary symlinked directory structure.
+          mkdir -p /tmp/ts-queries/concerto
+          for f in queries/*.scm; do
+            ln -sf "$PWD/$f" /tmp/ts-queries/concerto/
+          done
+          ts_query_ls check --format --workspace . /tmp/ts-queries/
+
   test-rust-binding:
     name: Test Rust binding
     runs-on: ubuntu-latest
