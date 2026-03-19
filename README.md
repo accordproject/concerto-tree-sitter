@@ -9,7 +9,8 @@ Concerto is a lightweight, object-oriented data modeling (schema) language desig
 ## Features
 
 - **Complete grammar** covering the full Concerto CTO language specification
-- **120 tests** in the test corpus, all passing
+- **120 corpus tests** all passing, plus **129 highlight assertions** and **53 query validation tests**
+- **CI pipeline** via GitHub Actions (multi-platform parser tests, query validation)
 - **Syntax highlighting queries** for editor integration
 - **Text object queries** for structural editing (nvim-treesitter-textobjects compatible)
 - **Locals queries** for scope-aware features
@@ -174,6 +175,9 @@ tree-sitter-concerto/
   grammar.js          # The tree-sitter grammar definition
   tree-sitter.json    # Tree-sitter configuration
   package.json        # Node.js package manifest
+  .github/
+    workflows/
+      ci.yml          # GitHub Actions CI pipeline
   queries/
     highlights.scm    # Syntax highlighting queries
     textobjects.scm   # Text object queries (nvim-treesitter-textobjects)
@@ -181,25 +185,9 @@ tree-sitter-concerto/
     indents.scm       # Auto-indentation queries
   test/
     corpus/           # Tree-sitter test corpus (120 tests)
-      namespace.txt
-      imports.txt
-      concepts.txt
-      enums.txt
-      scalars.txt
-      maps.txt
-      assets_participants.txt
-      fields.txt
-      decorators.txt
-      comments.txt
-      concerto_version.txt
-      validators.txt
+    highlight/        # Syntax highlighting assertion tests (129 assertions)
+    test-queries.sh   # Query validation test script (53 tests)
   examples/           # Example .cto files (validated with concerto-cli)
-    basic.cto
-    advanced.cto
-    decorators.cto
-    imports.cto
-    scalars.cto
-    maps.cto
   src/                # Generated C parser (auto-generated, do not edit)
 ```
 
@@ -303,17 +291,38 @@ tree-sitter parse examples/basic.cto
 ### Running Tests
 
 ```bash
-tree-sitter test
+# Run all tests (corpus + highlights + query validation)
+npm test
+
+# Run only corpus and highlight tests
+npm run test:corpus
+
+# Run only query validation tests
+npm run test:queries
 ```
 
-The test corpus contains 120 tests covering:
-- All declaration types (concept, asset, participant, transaction, event, enum, scalar, map)
-- All field types with arrays, optionals, defaults, and validators
-- All import styles (single, wildcard, multi-type, aliased, with URIs)
-- Decorators with all argument types
-- Comments (line and block)
-- Concerto version statements
-- Edge cases and combinations
+#### Test Suite
+
+The project has three layers of testing:
+
+**1. Corpus tests** (120 tests in `test/corpus/`)
+- Tree structure assertions for all language constructs
+- Covers all declaration types, field types, imports, decorators, validators, comments
+- Run via `tree-sitter test`
+
+**2. Highlight tests** (129 assertions in `test/highlight/`)
+- Verifies syntax highlighting captures are correctly assigned
+- Tests keyword, type, property, attribute, string, number, and punctuation highlighting
+- Uses tree-sitter's built-in Sublime Text–style assertion format
+- Run automatically as part of `tree-sitter test`
+
+**3. Query validation tests** (53 tests in `test/test-queries.sh`)
+- Verifies all 4 query files compile and execute against all 6 examples without errors
+- Asserts expected textobject captures (`@class.outer`, `@block.outer`, `@parameter.inner`, `@assignment.*`, `@comment.outer`) are present
+- Asserts expected highlight captures across all major categories
+- Run via `bash test/test-queries.sh`
+
+> **Note**: The `#make-range!` directives used for `@class.inner` and `@block.inner` text objects are Neovim-specific and cannot be tested via the tree-sitter CLI. These captures can only be validated in Neovim with nvim-treesitter-textobjects.
 
 ## About Concerto
 
