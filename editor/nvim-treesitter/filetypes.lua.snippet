@@ -1,0 +1,9 @@
+-- Add this entry to plugin/filetypes.lua (alphabetically sorted)
+-- This registers .cto files as the "concerto" filetype since Neovim
+-- does not yet detect it natively.
+
+vim.filetype.add {
+  extension = {
+    cto = 'concerto',
+  },
+}
