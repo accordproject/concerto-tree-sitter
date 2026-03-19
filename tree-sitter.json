@@ -1,15 +1,18 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
   "grammars": [
     {
       "name": "concerto",
       "camelcase": "Concerto",
       "scope": "source.concerto",
-      "injection-regex": "^concerto$",
-      "file-types": ["cto"],
+      "path": ".",
+      "file-types": [
+        "cto"
+      ],
       "highlights": "queries/highlights.scm",
       "locals": "queries/locals.scm",
       "folds": "queries/folds.scm",
-      "path": "."
+      "injection-regex": "^concerto$"
     }
   ],
   "metadata": {
@@ -24,5 +27,15 @@
     "links": {
       "repository": "https://github.com/accordproject/concerto-tree-sitter"
     }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "java": false,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": false
   }
 }

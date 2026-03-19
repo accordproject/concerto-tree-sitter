@@ -3,8 +3,23 @@ node_modules/
 
 # Build artifacts
 build/
+.build/
 prebuilds/
+target/
 *.wasm
+
+# Swift
+Package.resolved
+
+# Rust
+Cargo.lock
+
+# Go (go.sum is committed for libraries per Go convention)
+
+# C build artifacts
+*.o
+*.a
+*.pc
 
 # Tree-sitter cache and debug output
 .cache/
