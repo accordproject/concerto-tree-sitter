@@ -4,18 +4,18 @@ concerto version "^3.0.0"
 //               ^^^^^^^^ string.special
 namespace org.example.imports@1.0.0
 // <- keyword.import
-//        ^ namespace
+//        ^ module
 import org.accordproject.time@0.3.0.Duration
 // <- keyword.import
-//     ^ namespace
+//     ^ module
 //                                  ^^^^^^^^ type
 import org.accordproject.money@0.3.0.*
 // <- keyword.import
-//     ^ namespace
+//     ^ module
 //                                   ^ operator
 import org.accordproject.address@1.0.0.{Country, State}
 // <- keyword.import
-//     ^ namespace
+//     ^ module
 //                                      ^^^^^^^ type
 //                                               ^^^^^ type
 import org.accordproject.geo@1.0.0.{Location as Loc}

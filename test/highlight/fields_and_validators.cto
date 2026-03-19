@@ -50,7 +50,7 @@ concept Validated {
   o String email regex = /^[a-z]+$/
 //               ^^^^^ keyword
 //                     ^ operator
-//                       ^^^^^^^^^^ string.regex
+//                       ^^^^^^^^^^ string.regexp
   o String name length = [1, 100]
 //              ^^^^^^ keyword
 //                     ^ operator

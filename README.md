@@ -359,21 +359,19 @@ hx --grammar build
 
 #### Step 3: Install query files
 
+> **Important:** Use the Helix-specific queries from `editor/helix/queries/concerto/`, not the main `queries/` directory. The main queries use Neovim capture conventions which differ from Helix's.
+
 ```bash
 mkdir -p ~/.config/helix/runtime/queries/concerto
-cp queries/highlights.scm ~/.config/helix/runtime/queries/concerto/
-cp queries/textobjects.scm ~/.config/helix/runtime/queries/concerto/
-cp queries/indents.scm ~/.config/helix/runtime/queries/concerto/
-cp queries/locals.scm ~/.config/helix/runtime/queries/concerto/
-cp queries/folds.scm ~/.config/helix/runtime/queries/concerto/
+cp editor/helix/queries/concerto/*.scm ~/.config/helix/runtime/queries/concerto/
 ```
 
-Or symlink them for development:
+Or symlink them for development (run from the repo root):
 
 ```bash
 mkdir -p ~/.config/helix/runtime/queries/concerto
-for f in highlights textobjects indents locals folds; do
-  ln -sf /path/to/concerto-tree-sitter/queries/$f.scm ~/.config/helix/runtime/queries/concerto/
+for f in editor/helix/queries/concerto/*.scm; do
+  ln -sf "$(pwd)/$f" ~/.config/helix/runtime/queries/concerto/
 done
 ```
 
