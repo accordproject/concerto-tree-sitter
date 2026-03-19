@@ -1,0 +1,16 @@
+# Concerto Modelling Language
+# Add this [[language]] block to the language table in languages.toml (alphabetically sorted)
+# Add the [[grammar]] block to the grammar table at the bottom
+
+[[language]]
+name = "concerto"
+scope = "source.concerto"
+injection-regex = "concerto"
+file-types = ["cto"]
+comment-tokens = "//"
+block-comment-tokens = { start = "/*", end = "*/" }
+indent = { tab-width = 2, unit = "  " }
+
+[[grammar]]
+name = "concerto"
+source = { git = "https://github.com/accordproject/concerto-tree-sitter", rev = "de6a8f87024824ed904b3def3f900cd7bd705ba1" }
