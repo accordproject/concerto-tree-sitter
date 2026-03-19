@@ -1,0 +1,71 @@
+namespace org.example.declarations@1.0.0
+// <- keyword.import
+//        ^ namespace
+
+concept Person identified by name {
+// <- keyword.type
+//      ^ type
+//             ^^^^^^^^^^ keyword
+//                        ^^ keyword
+//                           ^^^^ property
+//                                ^ punctuation.bracket
+  o String name
+//^ punctuation.special
+//  ^^^^^^ type.builtin
+//         ^^^^ property
+  o Integer age optional
+//  ^^^^^^^ type.builtin
+//          ^^^ property
+//              ^^^^^^^^ keyword.modifier
+}
+// <- punctuation.bracket
+
+abstract asset Vehicle identified {
+// <- keyword.modifier
+//       ^^^^^ keyword.type
+//             ^^^^^^^ type
+//                     ^^^^^^^^^^ keyword
+  o String vin
+}
+
+enum Color {
+// <- keyword.type
+//   ^^^^^ type
+  o RED
+//^ punctuation.special
+//  ^^^ property
+  o GREEN
+  o BLUE
+}
+
+participant Buyer extends Person {
+// <- keyword.type
+//          ^^^^^ type
+//                ^^^^^^^ keyword
+//                        ^^^^^^ type
+}
+
+transaction Sale {
+// <- keyword.type
+//          ^^^^ type
+}
+
+event SaleCompleted {
+// <- keyword.type
+//    ^^^^^^^^^^^^^ type
+}
+
+scalar Email extends String
+// <- keyword.type
+//     ^^^^^ type
+//           ^^^^^^^ keyword
+//                   ^^^^^^ type.builtin
+
+map Lookup {
+// <- keyword.type
+//  ^^^^^^ type
+  o String
+//  ^^^^^^ type.builtin
+  o Integer
+//  ^^^^^^^ type.builtin
+}

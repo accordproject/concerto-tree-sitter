@@ -1,0 +1,42 @@
+namespace org.example.decorators@1.0.0
+
+@resource
+// <- attribute
+//^^^^^^^ attribute
+concept A {}
+
+@description("A tagged concept")
+// <- attribute
+//^^^^^^^^^^ attribute
+//          ^ punctuation.bracket
+//           ^^^^^^^^^^^^^^^^^^ string
+//                             ^ punctuation.bracket
+concept B {}
+
+@version(1, 0, 0)
+//^^^^^ attribute
+//      ^ punctuation.bracket
+//       ^ number
+//        ^ punctuation.delimiter
+//          ^ number
+//           ^ punctuation.delimiter
+//             ^ number
+//              ^ punctuation.bracket
+concept C {}
+
+@flag(true, false)
+//    ^^^^ boolean
+//          ^^^^^ boolean
+concept D {}
+
+@ref(Person)
+//   ^^^^^^ type
+concept E {}
+
+concept Person {
+  @label("Name")
+//^ attribute
+// ^^^^^ attribute
+//       ^^^^^^ string
+  o String name
+}

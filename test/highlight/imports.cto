@@ -1,0 +1,31 @@
+concerto version "^3.0.0"
+// <- keyword
+//       ^^^^^^^ keyword
+//               ^^^^^^^^ string.special
+namespace org.example.imports@1.0.0
+// <- keyword.import
+//        ^ namespace
+import org.accordproject.time@0.3.0.Duration
+// <- keyword.import
+//     ^ namespace
+//                                  ^^^^^^^^ type
+import org.accordproject.money@0.3.0.*
+// <- keyword.import
+//     ^ namespace
+//                                   ^ operator
+import org.accordproject.address@1.0.0.{Country, State}
+// <- keyword.import
+//     ^ namespace
+//                                      ^^^^^^^ type
+//                                               ^^^^^ type
+import org.accordproject.geo@1.0.0.{Location as Loc}
+//                                  ^^^^^^^^ type
+//                                           ^^ keyword
+//                                              ^^^ type
+import org.accordproject.time@0.3.0.TemporalUnit from https://models.accordproject.org/time@0.3.0.cto
+//                                               ^^^^ keyword.import
+//                                                    ^ string.special
+
+concept Placeholder {
+  o String id
+}

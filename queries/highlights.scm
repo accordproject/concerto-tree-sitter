@@ -229,4 +229,3 @@
 "," @punctuation.delimiter
 "." @punctuation.delimiter
 "=" @operator
-"@" @punctuation.special

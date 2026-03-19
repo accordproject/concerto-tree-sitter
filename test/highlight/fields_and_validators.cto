@@ -1,0 +1,76 @@
+namespace org.example.fields@1.0.0
+
+concept Address {
+  o String city
+}
+
+concept AllFields {
+  o String name default = "unknown"
+//  ^^^^^^ type.builtin
+//         ^^^^ property
+//              ^^^^^^^ keyword
+//                      ^ operator
+//                        ^^^^^^^^^ string
+  o Boolean active default = true
+//  ^^^^^^^ type.builtin
+//          ^^^^^^ property
+//                 ^^^^^^^ keyword
+//                         ^ operator
+//                           ^^^^ boolean
+  o DateTime created
+//  ^^^^^^^^ type.builtin
+//           ^^^^^^^ property
+  o Integer count default = 42
+//  ^^^^^^^ type.builtin
+//          ^^^^^ property
+//                          ^^ number
+  o Long bigNum
+//  ^^^^ type.builtin
+//       ^^^^^^ property
+  o Double score default = 3.14
+//  ^^^^^^ type.builtin
+//         ^^^^^ property
+//                         ^^^^ number
+  o Address home optional
+//  ^^^^^^^ type
+//          ^^^^ property
+//               ^^^^^^^^ keyword.modifier
+  --> Address work optional
+//^^^ operator
+//    ^^^^^^^ type
+//            ^^^^ property
+//                 ^^^^^^^^ keyword.modifier
+  o String[] tags
+//  ^^^^^^ type.builtin
+//        ^^ punctuation.bracket
+//           ^^^^ property
+}
+
+concept Validated {
+  o String email regex = /^[a-z]+$/
+//               ^^^^^ keyword
+//                     ^ operator
+//                       ^^^^^^^^^^ string.regex
+  o String name length = [1, 100]
+//              ^^^^^^ keyword
+//                     ^ operator
+//                       ^ punctuation.bracket
+//                        ^ number
+//                         ^ punctuation.delimiter
+//                           ^^^ number
+//                              ^ punctuation.bracket
+  o Integer age range = [0, 150]
+//              ^^^^^ keyword
+//                    ^ operator
+//                      ^ punctuation.bracket
+//                       ^ number
+//                        ^ punctuation.delimiter
+//                          ^^^ number
+//                             ^ punctuation.bracket
+}
+
+// This is a line comment
+// <- comment
+
+/* This is a block comment */
+// <- comment
