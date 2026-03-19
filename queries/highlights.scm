@@ -83,7 +83,7 @@
 
 ; Regex
 ; -----
-(regex_literal) @string.regex
+(regex_literal) @string.regexp
 
 ; Decorators
 ; ----------
@@ -93,9 +93,9 @@
 
 ; Namespace and imports
 ; --------------------
-(namespace_path) @namespace
+(namespace_path) @module
 
-(import_path) @namespace
+(import_path) @module
 
 (uri) @string.special
 

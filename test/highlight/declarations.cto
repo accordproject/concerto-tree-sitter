@@ -1,6 +1,6 @@
 namespace org.example.declarations@1.0.0
 // <- keyword.import
-//        ^ namespace
+//        ^ module
 
 concept Person identified by name {
 // <- keyword.type
