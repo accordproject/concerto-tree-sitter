@@ -2,6 +2,19 @@
 
 This document records the AI-assisted development process used to create the `tree-sitter-concerto` parser. It serves as a reference for the methodology, decisions, and tooling involved.
 
+## Commit Requirements (MANDATORY)
+
+This project follows the [Developer Certificate of Origin (DCO)](https://developercertificate.org/). **Every commit MUST include a DCO sign-off line and a co-author trailer.** Commits without a sign-off will be rejected by CI.
+
+When creating commits, ALWAYS include BOTH of the following trailers:
+
+```
+Signed-off-by: Jamie Shorten <jamie@jamieshorten.com>
+Co-authored-by: Open Code <noreply@opencode.ai>
+```
+
+This applies to ALL commits — fixes, features, documentation, refactors, everything. Never skip the sign-off or co-author line.
+
 ## Project Goal
 
 Create a complete tree-sitter parser for the **Concerto Modelling Language** (`.cto` files) by the Accord Project, including grammar, tests, syntax highlighting queries, and documentation.

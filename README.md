@@ -60,8 +60,8 @@ Concerto is a lightweight, object-oriented data modeling (schema) language desig
 
 ```bash
 # Clone the repository
-git clone https://github.com/accordproject/tree-sitter-concerto.git
-cd tree-sitter-concerto
+git clone https://github.com/accordproject/concerto-tree-sitter.git
+cd concerto-tree-sitter
 
 # Install dependencies
 npm install --ignore-scripts
@@ -207,32 +207,50 @@ Each node carries both naming conventions (e.g. `@class.outer @class.around`). E
 | Assignment | `@assignment.outer` / `@assignment.inner` | — | Default value clauses (Neovim only) |
 | Comment | `@comment.outer` | `@comment.around` / `@comment.inside` | Line and block comments |
 
-**Neovim keybindings** (with nvim-treesitter-textobjects):
-- `vic` — select the fields inside a concept (excluding braces)
-- `vac` — select an entire declaration including its decorators
-- `]c` / `[c` — jump to the next / previous declaration
-- `dap` — delete a single field declaration
-- `cia` — change the value in a `default = ...` clause
+**Neovim** (with [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)):
 
-**Helix keybindings**:
-- `]c` / `[c` — jump to next / previous declaration
-- `mac` / `mic` — select around / inside a declaration
+nvim-treesitter-textobjects does not provide default keymaps — you must configure them yourself. Below are example keymaps using the captures defined in `textobjects.scm`:
+
+```lua
+-- Select
+vim.keymap.set({ "x", "o" }, "ac", function()
+  require("nvim-treesitter-textobjects.select").select_textobject("@class.outer", "textobjects")
+end, { desc = "around class" })
+vim.keymap.set({ "x", "o" }, "ic", function()
+  require("nvim-treesitter-textobjects.select").select_textobject("@class.inner", "textobjects")
+end, { desc = "inside class" })
+vim.keymap.set({ "x", "o" }, "ip", function()
+  require("nvim-treesitter-textobjects.select").select_textobject("@parameter.inner", "textobjects")
+end, { desc = "inside parameter" })
+
+-- Move (LazyVim configures ]c/[c and ]a/[a by default)
+vim.keymap.set({ "n", "x", "o" }, "]c", function()
+  require("nvim-treesitter-textobjects.move").goto_next_start("@class.outer", "textobjects")
+end, { desc = "Next class start" })
+vim.keymap.set({ "n", "x", "o" }, "[c", function()
+  require("nvim-treesitter-textobjects.move").goto_previous_start("@class.outer", "textobjects")
+end, { desc = "Prev class start" })
+```
+
+With those mappings, you can use motions like `vic` (select fields inside a declaration), `vac` (select entire declaration), `dip` (delete a field), and `]c` / `[c` (jump between declarations).
+
+**Helix**:
+- `]t` / `[t` — jump to next / previous declaration (type/class)
+- `mat` / `mit` — select around / inside a declaration
 - `]a` / `[a` — jump to next / previous parameter (field)
-- `]C` / `[C` — jump to next / previous comment
+- `]c` / `[c` — jump to next / previous comment
 
 ## Editor Integration
 
 ### Neovim
 
-#### Option A: Using nvim-treesitter (recommended)
+> **Note:** The parser is not yet in the nvim-treesitter registry, so `:TSInstall concerto` will not work *by default* until you add the parser to the registry (for example via a custom `parser_config`) or use one of the manual methods below.
 
-Register the parser and filetype in your Neovim config:
+#### Step 1: Register the `.cto` filetype
+
+Add a plugin file (e.g., `~/.config/nvim/lua/plugins/concerto.lua` for LazyVim, or anywhere in your config):
 
 ```lua
--- Register the concerto parser with nvim-treesitter
-vim.treesitter.language.register("concerto", "concerto")
-
--- Associate .cto files with the concerto filetype
 vim.filetype.add({
   extension = {
     cto = "concerto",
@@ -240,50 +258,64 @@ vim.filetype.add({
 })
 ```
 
-Then install the parser:
+#### Step 2: Build and install the parser
 
-```vim
-:TSInstall concerto
+```bash
+git clone https://github.com/accordproject/concerto-tree-sitter.git
+cd concerto-tree-sitter
+tree-sitter generate
+cc -shared -fPIC -o concerto.so src/parser.c -I src
 ```
 
-If the parser is not yet in the nvim-treesitter registry, you can add it manually:
+Copy the compiled parser to Neovim's parser directory:
+
+```bash
+# macOS / Linux (default XDG data directory)
+mkdir -p ~/.local/share/nvim/site/parser
+cp concerto.so ~/.local/share/nvim/site/parser/concerto.so
+
+# If you use a non-default XDG_DATA_HOME, you can instead run:
+# mkdir -p "$XDG_DATA_HOME/nvim/site/parser"
+# cp concerto.so "$XDG_DATA_HOME/nvim/site/parser/concerto.so"
+```
+
+#### Step 3: Install query files
+
+Symlink (recommended for development) or copy the query files:
+
+```bash
+# Symlink from the cloned repo (edits to queries take effect immediately)
+mkdir -p ~/.config/nvim/queries/concerto
+ln -sf /path/to/concerto-tree-sitter/queries/highlights.scm ~/.config/nvim/queries/concerto/
+ln -sf /path/to/concerto-tree-sitter/queries/locals.scm ~/.config/nvim/queries/concerto/
+ln -sf /path/to/concerto-tree-sitter/queries/folds.scm ~/.config/nvim/queries/concerto/
+ln -sf /path/to/concerto-tree-sitter/queries/indents.scm ~/.config/nvim/queries/concerto/
+ln -sf /path/to/concerto-tree-sitter/queries/textobjects.scm ~/.config/nvim/queries/concerto/
+```
+
+Neovim auto-discovers parsers in `~/.local/share/nvim/site/parser/` and queries in `~/.config/nvim/queries/` — no additional plugin configuration is needed.
+
+#### Alternative: nvim-treesitter `parser_config` (if using nvim-treesitter)
+
+If you use nvim-treesitter and prefer it to manage the parser build, you can register it manually instead of steps 2–3 above:
 
 ```lua
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.concerto = {
   install_info = {
-    url = "https://github.com/accordproject/tree-sitter-concerto",
+    url = "https://github.com/accordproject/concerto-tree-sitter",
     files = { "src/parser.c" },
     branch = "main",
   },
   filetype = "concerto",
 }
+
+-- Then run :TSInstall concerto
 ```
-
-#### Option B: Using Neovim's built-in treesitter (no plugins)
-
-Neovim 0.10+ can install parsers directly:
-
-```lua
--- In your init.lua
-vim.filetype.add({ extension = { cto = "concerto" } })
-
--- Install the parser (run once)
--- :lua vim.treesitter.language.add("concerto", { path = "/path/to/concerto.so" })
-```
-
-Build the shared library:
-
-```bash
-git clone https://github.com/accordproject/tree-sitter-concerto
-cd tree-sitter-concerto
-tree-sitter generate
-cc -shared -fPIC -o concerto.so src/parser.c -I src
-```
-
-Then copy `concerto.so` to your Neovim parser directory and the `queries/` files to your runtime queries directory.
 
 ### Helix
+
+#### Step 1: Add language and grammar config
 
 Add to your `~/.config/helix/languages.toml`:
 
@@ -294,21 +326,22 @@ scope = "source.concerto"
 file-types = ["cto"]
 comment-token = "//"
 indent = { tab-width = 2, unit = "  " }
-roots = ["package.json"]
 
 [[grammar]]
 name = "concerto"
-source = { git = "https://github.com/accordproject/tree-sitter-concerto", rev = "main" }
+source = { git = "https://github.com/accordproject/concerto-tree-sitter", rev = "main" }
 ```
 
-Then fetch and build the grammar:
+> **Tip:** For a pinned version, replace `rev = "main"` with a specific commit SHA (e.g., `rev = "01ac8fd"`).
+
+#### Step 2: Fetch and build the grammar
 
 ```bash
 hx --grammar fetch
 hx --grammar build
 ```
 
-Copy the query files to your Helix runtime:
+#### Step 3: Install query files
 
 ```bash
 mkdir -p ~/.config/helix/runtime/queries/concerto
@@ -316,13 +349,25 @@ cp queries/highlights.scm ~/.config/helix/runtime/queries/concerto/
 cp queries/textobjects.scm ~/.config/helix/runtime/queries/concerto/
 cp queries/indents.scm ~/.config/helix/runtime/queries/concerto/
 cp queries/locals.scm ~/.config/helix/runtime/queries/concerto/
+cp queries/folds.scm ~/.config/helix/runtime/queries/concerto/
 ```
+
+Or symlink them for development:
+
+```bash
+mkdir -p ~/.config/helix/runtime/queries/concerto
+for f in highlights textobjects indents locals folds; do
+  ln -sf /path/to/concerto-tree-sitter/queries/$f.scm ~/.config/helix/runtime/queries/concerto/
+done
+```
+
+Verify with: `hx --health concerto`
 
 ### Emacs (tree-sitter)
 
 ```elisp
 (add-to-list 'treesit-language-source-alist
-  '(concerto "https://github.com/accordproject/tree-sitter-concerto"))
+  '(concerto "https://github.com/accordproject/concerto-tree-sitter"))
 
 ;; Install with: M-x treesit-install-language-grammar RET concerto RET
 ```
