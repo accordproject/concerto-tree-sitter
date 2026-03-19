@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+build/
+prebuilds/
+*.wasm
+
+# Tree-sitter cache and debug output
+.cache/
+log.html
+
+# Platform-specific shared libraries (local testing only)
+# Note: src/parser.c and src/tree_sitter/ are generated but
+# conventionally committed in tree-sitter grammar repos
+*.dylib
+*.so
+*.dll
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
