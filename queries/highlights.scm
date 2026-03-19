@@ -1,9 +1,7 @@
 ; Concerto Language - Syntax Highlighting Queries
 ; =================================================
-
 ; Keywords
 ; --------
-
 ; Declaration keywords
 [
   "concept"
@@ -22,31 +20,23 @@
   "from"
 ] @keyword.import
 
-[
-  "extends"
-] @keyword
+"extends" @keyword
 
-[
-  "abstract"
-] @keyword.modifier
+"abstract" @keyword.modifier
 
 [
   "identified"
   "by"
 ] @keyword
 
-[
-  "optional"
-] @keyword.modifier
+"optional" @keyword.modifier
 
 [
   "concerto"
   "version"
 ] @keyword
 
-[
-  "default"
-] @keyword
+"default" @keyword
 
 [
   "regex"
@@ -54,9 +44,7 @@
   "length"
 ] @keyword
 
-[
-  "as"
-] @keyword
+"as" @keyword
 
 ; Primitive type keywords
 [
@@ -76,17 +64,21 @@
 ; Comments
 ; --------
 (line_comment) @comment
+
 (block_comment) @comment
 
 ; Strings
 ; -------
 (string_literal) @string
+
 (escape_sequence) @string.escape
 
 ; Numbers
 ; -------
 (signed_integer) @number
+
 (signed_real) @number
+
 (signed_number) @number
 
 ; Regex
@@ -221,11 +213,19 @@
 ; Delimiters
 ; ----------
 "{" @punctuation.bracket
+
 "}" @punctuation.bracket
+
 "(" @punctuation.bracket
+
 ")" @punctuation.bracket
+
 "[" @punctuation.bracket
+
 "]" @punctuation.bracket
+
 "," @punctuation.delimiter
+
 "." @punctuation.delimiter
+
 "=" @operator
