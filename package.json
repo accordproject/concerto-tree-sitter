@@ -33,8 +33,7 @@
     "node-gyp-build": "^4.8.0"
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.24.0",
-    "@accordproject/concerto-cli": "^3.0.0"
+    "tree-sitter-cli": "^0.24.0"
   },
   "peerDependencies": {
     "tree-sitter": "^0.21.0"
@@ -54,8 +53,7 @@
     "generate": "tree-sitter generate",
     "build": "tree-sitter generate && node-gyp-build",
     "build-wasm": "tree-sitter build --wasm",
-    "parse": "tree-sitter parse",
-    "lint-models": "concerto parse"
+    "parse": "tree-sitter parse"
   },
   "tree-sitter": [
     {

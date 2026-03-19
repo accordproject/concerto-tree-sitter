@@ -278,11 +278,14 @@ Key design choices:
 
 ### Validation
 
-Example `.cto` files are cross-validated against the official Concerto parser:
+Example `.cto` files have been cross-validated against the official Concerto parser. To repeat this validation yourself, install the CLI separately (it is not a project dependency):
 
 ```bash
+# Install the Concerto CLI globally (optional, for cross-validation only)
+npm install -g @accordproject/concerto-cli
+
 # Validate with the official Concerto CLI
-npx concerto parse --model examples/basic.cto
+concerto parse --model examples/basic.cto
 
 # Parse with tree-sitter
 tree-sitter parse examples/basic.cto
