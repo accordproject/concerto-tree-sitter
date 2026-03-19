@@ -155,6 +155,35 @@ The project was built using an AI-assisted architecture-led development approach
 - Added a documentation note that `#make-range!` is not supported by mini.ai
 - Validated all queries against every example `.cto` file with `tree-sitter query` — zero errors
 
+### Phase 8: Testing & CI
+
+**Objective**: Add comprehensive testing beyond the corpus tests, and set up continuous integration.
+
+**Actions**:
+1. Created syntax highlighting assertion tests in `test/highlight/` (4 files, 129 assertions)
+2. Created query validation test script `test/test-queries.sh` (53 tests)
+3. Fixed a bug in `highlights.scm` where standalone `"@" @punctuation.special` was overriding decorator `@attribute` captures, leaving decorator names unhighlighted
+4. Added `.gitignore` for the project
+5. Set up GitHub Actions CI pipeline (`.github/workflows/ci.yml`)
+6. Added npm scripts for running different test tiers
+
+**Bug found and fixed**:
+The highlight tests revealed that the standalone `"@" @punctuation.special` rule at the end of `highlights.scm` was taking precedence over the decorator pattern's `"@" @attribute` capture. In tree-sitter's highlight engine, later patterns override earlier ones for the same node, and this override was also preventing the decorator name's `@attribute` capture from being applied. The fix was to remove the standalone `"@" @punctuation.special` rule entirely.
+
+**Test architecture**:
+
+| Test Layer | Location | Count | Runner |
+|---|---|---|---|
+| Corpus tests | `test/corpus/*.txt` | 120 tests | `tree-sitter test` |
+| Highlight tests | `test/highlight/*.cto` | 129 assertions | `tree-sitter test` (auto-discovered) |
+| Query validation | `test/test-queries.sh` | 53 tests | `bash test/test-queries.sh` |
+| **Total** | | **302 checks** | |
+
+**CI pipeline** (`.github/workflows/ci.yml`):
+- Multi-platform parser tests (ubuntu, macos, windows) using `tree-sitter/parser-test-action`
+- Example file parsing using `tree-sitter/parse-action`
+- Query validation using custom script
+
 ## Tools Used
 
 | Tool | Version | Purpose |
@@ -181,6 +210,8 @@ Architect Agent (orchestrator)
     +-- Architect: Validated & rewrote textobjects.scm (Phase 7)
     |
     +-- Architect: Wrote README.md and agents.md
+    |
+    +-- Architect: Created highlight tests, query validation, CI pipeline (Phase 8)
 ```
 
 ## Metrics
@@ -188,9 +219,12 @@ Architect Agent (orchestrator)
 - **Grammar size**: ~627 lines of JavaScript
 - **Generated parser**: ~47,000 lines of C
 - **Test corpus**: 120 tests across 12 files
+- **Highlight tests**: 129 assertions across 4 files
+- **Query validation tests**: 53 tests
+- **Total test checks**: 302
 - **Test pass rate**: 100%
 - **Example files**: 6 validated .cto files
-- **Syntax highlighting queries**: 170+ lines covering all node types
+- **Syntax highlighting queries**: 230+ lines covering all node types
 - **Text object queries**: 128 lines, 5 capture groups (`@class`, `@block`, `@parameter`, `@assignment`, `@comment`)
 - **Development time**: Single session, iterative approach
 - **Conflicts in grammar**: 0 (clean generation)
