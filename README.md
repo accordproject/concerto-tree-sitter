@@ -9,10 +9,11 @@ Concerto is a lightweight, object-oriented data modeling (schema) language desig
 ## Features
 
 - **Complete grammar** covering the full Concerto CTO language specification
-- **120 corpus tests** all passing, plus **129 highlight assertions** and **53 query validation tests**
+- **120 corpus tests** all passing, plus **129 highlight assertions** and **63 query validation tests**
 - **CI pipeline** via GitHub Actions (multi-platform parser tests, query validation)
 - **Syntax highlighting queries** for editor integration
-- **Text object queries** for structural editing (nvim-treesitter-textobjects compatible)
+- **Text object queries** for structural editing (compatible with nvim-treesitter-textobjects and Helix)
+- **Fold queries** for code folding
 - **Locals queries** for scope-aware features
 - **Indent queries** for auto-indentation
 - **Cross-validated** against the official `@accordproject/concerto-cli` parser
@@ -180,20 +181,21 @@ tree-sitter-concerto/
       ci.yml          # GitHub Actions CI pipeline
   queries/
     highlights.scm    # Syntax highlighting queries
-    textobjects.scm   # Text object queries (nvim-treesitter-textobjects)
+    textobjects.scm   # Text object queries (Neovim + Helix compatible)
     locals.scm        # Scope/definition/reference queries
     indents.scm       # Auto-indentation queries
+    folds.scm         # Code folding queries
   test/
     corpus/           # Tree-sitter test corpus (120 tests)
     highlight/        # Syntax highlighting assertion tests (129 assertions)
-    test-queries.sh   # Query validation test script (53 tests)
+    test-queries.sh   # Query validation test script (63 tests)
   examples/           # Example .cto files (validated with concerto-cli)
   src/                # Generated C parser (auto-generated, do not edit)
 ```
 
 ## Text Objects
 
-The `queries/textobjects.scm` file provides structural text objects compatible with [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects).
+The `queries/textobjects.scm` file provides structural text objects compatible with [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) and [Helix](https://helix-editor.com/).
 
 | Text Object | Inner (`i`) | Outer (`a`) | Description |
 |---|---|---|---|
@@ -206,29 +208,25 @@ The `queries/textobjects.scm` file provides structural text objects compatible w
 **Example keybindings** (with nvim-treesitter-textobjects configured):
 - `vic` — select the fields inside a concept (excluding braces)
 - `vac` — select an entire declaration including its decorators
+- `]c` / `[c` — jump to the next / previous declaration
 - `dap` — delete a single field declaration
 - `cia` — change the value in a `default = ...` clause
 
-> **Note**: The text object queries use `#make-range!` directives to properly exclude braces from inner selections. This is supported by nvim-treesitter-textobjects but not by mini.ai. If using mini.ai, you may need simpler capture patterns.
+**Helix navigation**: `]c` / `[c` for class navigation, `mac` / `mic` for select around/inside class.
+
+> **Note**: Helix uses `class.around`/`class.inside` naming internally but reads `.outer`/`.inner` from query files automatically. No conversion needed.
 
 ## Editor Integration
 
-### Neovim (nvim-treesitter)
+### Neovim
 
-Add the parser to your nvim-treesitter configuration:
+#### Option A: Using nvim-treesitter (recommended)
+
+Register the parser and filetype in your Neovim config:
 
 ```lua
-local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-parser_config.concerto = {
-  install_info = {
-    url = "https://github.com/accordproject/tree-sitter-concerto",
-    files = { "src/parser.c" },
-    branch = "main",
-    generate_requires_npm = false,
-    requires_generate_from_grammar = false,
-  },
-  filetype = "concerto",
-}
+-- Register the concerto parser with nvim-treesitter
+vim.treesitter.language.register("concerto", "concerto")
 
 -- Associate .cto files with the concerto filetype
 vim.filetype.add({
@@ -238,9 +236,52 @@ vim.filetype.add({
 })
 ```
 
+Then install the parser:
+
+```vim
+:TSInstall concerto
+```
+
+If the parser is not yet in the nvim-treesitter registry, you can add it manually:
+
+```lua
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+parser_config.concerto = {
+  install_info = {
+    url = "https://github.com/accordproject/tree-sitter-concerto",
+    files = { "src/parser.c" },
+    branch = "main",
+  },
+  filetype = "concerto",
+}
+```
+
+#### Option B: Using Neovim's built-in treesitter (no plugins)
+
+Neovim 0.10+ can install parsers directly:
+
+```lua
+-- In your init.lua
+vim.filetype.add({ extension = { cto = "concerto" } })
+
+-- Install the parser (run once)
+-- :lua vim.treesitter.language.add("concerto", { path = "/path/to/concerto.so" })
+```
+
+Build the shared library:
+
+```bash
+git clone https://github.com/accordproject/tree-sitter-concerto
+cd tree-sitter-concerto
+tree-sitter generate
+cc -shared -fPIC -o concerto.so src/parser.c -I src
+```
+
+Then copy `concerto.so` to your Neovim parser directory and the `queries/` files to your runtime queries directory.
+
 ### Helix
 
-Add to your `languages.toml`:
+Add to your `~/.config/helix/languages.toml`:
 
 ```toml
 [[language]]
@@ -249,10 +290,28 @@ scope = "source.concerto"
 file-types = ["cto"]
 comment-token = "//"
 indent = { tab-width = 2, unit = "  " }
+roots = ["package.json"]
 
 [[grammar]]
 name = "concerto"
 source = { git = "https://github.com/accordproject/tree-sitter-concerto", rev = "main" }
+```
+
+Then fetch and build the grammar:
+
+```bash
+hx --grammar fetch
+hx --grammar build
+```
+
+Copy the query files to your Helix runtime:
+
+```bash
+mkdir -p ~/.config/helix/runtime/queries/concerto
+cp queries/highlights.scm ~/.config/helix/runtime/queries/concerto/
+cp queries/textobjects.scm ~/.config/helix/runtime/queries/concerto/
+cp queries/indents.scm ~/.config/helix/runtime/queries/concerto/
+cp queries/locals.scm ~/.config/helix/runtime/queries/concerto/
 ```
 
 ### Emacs (tree-sitter)
@@ -260,6 +319,8 @@ source = { git = "https://github.com/accordproject/tree-sitter-concerto", rev = 
 ```elisp
 (add-to-list 'treesit-language-source-alist
   '(concerto "https://github.com/accordproject/tree-sitter-concerto"))
+
+;; Install with: M-x treesit-install-language-grammar RET concerto RET
 ```
 
 ## Development
@@ -319,13 +380,12 @@ The project has three layers of testing:
 - Uses tree-sitter's built-in Sublime Text–style assertion format
 - Run automatically as part of `tree-sitter test`
 
-**3. Query validation tests** (53 tests in `test/test-queries.sh`)
-- Verifies all 4 query files compile and execute against all 6 examples without errors
-- Asserts expected textobject captures (`@class.outer`, `@block.outer`, `@parameter.inner`, `@assignment.*`, `@comment.outer`) are present
+**3. Query validation tests** (63 tests in `test/test-queries.sh`)
+- Verifies all 5 query files compile and execute against all 6 examples without errors
+- Asserts expected textobject captures (`@class.outer`, `@class.inner`, `@block.outer`, `@block.inner`, `@parameter.inner`, `@assignment.*`, `@comment.outer`) are present
+- Asserts expected fold captures are present
 - Asserts expected highlight captures across all major categories
 - Run via `bash test/test-queries.sh`
-
-> **Note**: The `#make-range!` directives used for `@class.inner` and `@block.inner` text objects are Neovim-specific and cannot be tested via the tree-sitter CLI. These captures can only be validated in Neovim with nvim-treesitter-textobjects.
 
 ## About Concerto
 

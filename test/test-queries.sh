@@ -108,6 +108,12 @@ fi
 assert_adv_capture "assignment.outer" "@assignment.outer matches default clauses"
 assert_adv_capture "assignment.inner" "@assignment.inner matches default values"
 
+# @class.inner should match body contents (excluding braces)
+assert_adv_capture "class.inner" "@class.inner present for declaration bodies"
+
+# @block.inner should match block contents (excluding braces)
+assert_adv_capture "block.inner" "@block.inner present for block bodies"
+
 # ---------------------------------------------------------------------------
 # Section 4: Verify textobjects captures on examples/maps.cto
 # ---------------------------------------------------------------------------
@@ -154,6 +160,40 @@ assert_scalar_capture "class.outer" "@class.outer matches scalar declarations"
 # Scalars with defaults have assignment captures
 assert_scalar_capture "assignment.outer" "@assignment.outer matches scalar defaults"
 assert_scalar_capture "assignment.inner" "@assignment.inner matches scalar default values"
+
+# ---------------------------------------------------------------------------
+# Section 5b: Verify folds query captures
+# ---------------------------------------------------------------------------
+echo ""
+echo "Fold captures (basic.cto):"
+
+FOLD_OUTPUT=$(tree-sitter query queries/folds.scm examples/basic.cto 2>/dev/null)
+
+assert_fold_capture() {
+  local capture="$1"
+  local description="$2"
+  if echo "$FOLD_OUTPUT" | grep -qF -- "$capture"; then
+    pass "$description"
+  else
+    fail "$description (capture '$capture' not found)"
+  fi
+}
+
+assert_fold_capture "fold" "@fold matches declaration bodies"
+
+FOLD_ADV_OUTPUT=$(tree-sitter query queries/folds.scm examples/advanced.cto 2>/dev/null)
+
+assert_fold_adv_capture() {
+  local capture="$1"
+  local description="$2"
+  if echo "$FOLD_ADV_OUTPUT" | grep -qF -- "$capture"; then
+    pass "$description"
+  else
+    fail "$description (capture '$capture' not found)"
+  fi
+}
+
+assert_fold_adv_capture "fold" "@fold matches in advanced example"
 
 # ---------------------------------------------------------------------------
 # Section 6: Verify highlights query covers key captures
