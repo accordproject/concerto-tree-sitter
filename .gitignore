@@ -14,8 +14,7 @@ Package.resolved
 # Rust
 Cargo.lock
 
-# Go
-go.sum
+# Go (go.sum is committed for libraries per Go convention)
 
 # C build artifacts
 *.o

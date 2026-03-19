@@ -5,6 +5,11 @@
 //!
 //! ```
 //! let code = r#"
+//! namespace org.example@1.0.0
+//!
+//! concept Person {
+//!   o String name
+//! }
 //! "#;
 //! let mut parser = tree_sitter::Parser::new();
 //! let language = tree_sitter_concerto::LANGUAGE;
