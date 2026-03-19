@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - grammar.js
+      - src/**
+      - test/**
+      - queries/**
+      - examples/**
+      - bindings/**
+      - tree-sitter.json
+      - package.json
+  pull_request:
+    paths:
+      - grammar.js
+      - src/**
+      - test/**
+      - queries/**
+      - examples/**
+      - bindings/**
+      - tree-sitter.json
+      - package.json
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test parser
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action/cli@v2
+
+      - name: Run parser and highlight tests
+        uses: tree-sitter/parser-test-action@v2
+
+      - name: Parse example files
+        uses: tree-sitter/parse-action@v4
+        id: parse-examples
+        with:
+          files: examples/*.cto
+
+      - name: Upload parse failures
+        uses: actions/upload-artifact@v4
+        if: "!cancelled() && steps.parse-examples.outcome == 'failure'"
+        with:
+          name: parse-failures-${{matrix.os}}
+          path: ${{steps.parse-examples.outputs.failures}}
+
+  query-validation:
+    name: Validate queries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action/cli@v2
+
+      - name: Generate parser
+        run: tree-sitter generate
+
+      - name: Run query validation tests
+        run: bash test/test-queries.sh
