@@ -25,6 +25,7 @@
     "binding.gyp",
     "prebuilds/**",
     "bindings/node/*",
+    "editor/emacs/*",
     "queries/*",
     "src/**",
     "*.wasm"
