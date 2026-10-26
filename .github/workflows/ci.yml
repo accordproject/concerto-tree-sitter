@@ -12,6 +12,7 @@ on:
       - bindings/**
       - tree-sitter.json
       - package.json
+      - node_modules/**
       - Cargo.toml
       - go.mod
       - .github/workflows/ci.yml
@@ -25,6 +26,7 @@ on:
       - bindings/**
       - tree-sitter.json
       - package.json
+      - node_modules/**
       - Cargo.toml
       - go.mod
       - .github/workflows/ci.yml
